@@ -37,7 +37,7 @@ async function geocodeAddress(address) {
     }
 }
 
-// ✅ API ทดสอบระบบ
+// ✅ API ทดสอบระบบ123
 router.get("/api", (req, res) => {
     res.json({ message: "API ทำงานแล้ว!" });
 });
