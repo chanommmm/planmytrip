@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+header {
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 0px;
+    background-color: #f9f9f9;
+    z-index: 999;
+    font-family: 'Poppins',sans-serif;
+}
+
+.head-con{
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 1.5rem 0;
+}
+
+.item-con {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0;
+}
+
+.logo .title {
+    font-size: 30px;
+    color: #000000;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.right-btn .right-header {
+    display: flex;
+    gap: 8px;
+}
+
+.right-btn .how-to-btn {
+    color: #222222;
+    font-size: large;
+    font-weight: bold;
+    padding: 10px 20px;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+.right-btn .how-to-btn:hover {
+    color: #007bff;
+}
+
+.right-btn .create-trip-btn {
+    color: white;
+    display: inline-block;
+    font-size: large;
+    font-weight: bold;
+    background-color: #007bff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.right-btn .create-trip-btn:hover {
+    background-color: #0056b3;
+}
+
+

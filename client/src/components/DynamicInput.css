@@ -1,0 +1,161 @@
+/* กำหนด Style ให้กับ Container */
+.container-input {
+    margin: 0 4rem;
+    /*background-color: #f4d5d5;*/
+}
+
+/* กำหนด Style ให้กับ Input Set */
+.input-set {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 8px; /* ระยะห่างระหว่าง Input และ Dropdown */
+}
+
+.label-container {
+    display: flex;
+    flex-direction: column; /* จัดให้ตัวอักษรอยู่ข้างล่าง จุดสามจุด */
+    align-items: center; /* จัดให้อยู่ตรงกลาง */
+    position: relative; /* ใช้ Absolute Positioning */
+}
+
+.input-set .label {
+    width: 24px;
+    height: 24px;
+    color: #6F6F6F;
+    font-size: small;
+    font-weight: bold;
+    border: 2px solid #a1a1a1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* จุดสามจุด */
+/* จุดสามจุดเหนือ B, C, D , E*/
+.label-container[data-label="B"]::before,
+.label-container[data-label="C"]::before,
+.label-container[data-label="D"]::before, 
+.label-container[data-label="E"]::before {
+
+    content: "︙";
+    font-size: 16px;
+    color: #6F6F6F;
+    position: absolute;
+    top: -30px; /* ย้ายขึ้นด้านบน */
+    left: 50%;
+    transform: translateX(-50%);
+    display: block; /* เปลี่ยนจาก `none` เป็น `block` */
+}
+/* .label::after {
+    content: "︙";
+    font-size: 16px;
+    margin-left: 5px;
+    color: #6F6F6F;
+    display: none;
+} */
+
+/* แสดงจุดสามจุดเฉพาะ Label B, C, D */
+/*.label[data-label="B"]::after,
+.label[data-label="C"]::after,
+.label[data-label="D"]::after {
+    display: block;
+}*/
+
+
+/* สไตล์สำหรับ Input (Text) */
+.input-set input {
+    padding: 10px;
+    font-size: medium;
+    border: 2px solid #D9D9D9;
+    border-radius: 5px;
+    flex: 1; /* ให้ Input กว้างเต็มที่ */
+    transition: border-color 0.3s ease;
+    background-color: white;
+    color: #6F6F6F;
+}
+
+.input-set input:focus {
+    border-color: #4070FF;
+}
+
+/* สไตล์สำหรับ Dropdown */
+.input-set select {
+    padding: 10px;
+    font-size: medium;
+    border: 2px solid #D9D9D9;
+    border-radius: 5px;
+    background-color: white;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+    color: #6F6F6F;
+}
+
+.input-set select:focus {
+    border-color: #4070FF;
+}
+
+/* การจัดตำแหน่ง Checkbox และปุ่ม */
+.options-container {
+    display: flex;
+    justify-content: space-between; /* กระจาย Checkbox และปุ่มให้ไปยังขอบซ้าย-ขวา */
+    align-items: center;
+    
+}
+
+/* สไตล์สำหรับ Checkbox */
+.checkbox-container {
+    cursor: pointer;
+    color: #a1a1a1;
+}
+
+.checkbox {
+    width: 14px;
+    height: 14px;
+}
+
+.checkbox-label {
+    font-size: small;
+    cursor: pointer;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* ปุ่มเพิ่ม Input */
+.add-button {
+    padding: 10px 15px;
+    font-size: small;
+    font-weight: bold;
+    color: #4070FF;
+    background-color: white;
+    border: 1px solid #4070FF;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.add-button:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.add-button:disabled {
+    background-color: #f3f3f3;
+    color: #a1a1a1;
+    border: 1px solid #a1a1a1;
+    cursor: not-allowed;
+}
+
+.remove-button {
+    background-color: transparent;
+    border: none;
+    color: #6F6F6F;
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s;
+}
+
+.remove-button:hover {
+    color: #000;
+}

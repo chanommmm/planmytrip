@@ -1,0 +1,265 @@
+/*body, html {
+    min-height: 100vh; /* ความสูงขั้นต่ำเต็มจอ */
+    /*overflow-x: hidden;
+}*/
+  
+/*#root {
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+}*/
+
+
+.postimage {
+    position: absolute;
+    width: 100%;
+    height: 350px;
+    z-index: 0;
+}
+  
+.postimage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 0px 0px 0px 50px;
+}
+
+.overlay-content {
+    position: relative;
+    top: 3rem;
+    left: 0;
+    width: 100%;
+    /* height: 100%; */
+    z-index: 5;
+    display: block;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* ตรงกลาง */
+    color: white;
+    
+}
+    
+.main-content {
+    width: 100%;
+    padding: 6rem 0 3rem 0; /* เพิ่ม padding ล่างเยอะพอให้ครอบ .main-box */
+    position: relative; /* สำคัญมาก เพื่อให้ absolute ผูกกับตรงนี้ */
+    text-align: center;
+}
+  
+.main-content .Title {
+    font-size: xx-large;
+    font-weight: bolder;
+    color: white;
+}
+  
+.box {
+    width: 75%;
+    margin: 40px auto;
+    text-align: center;
+    align-self: center;
+    position: relative;
+    /*background-color: aqua;*/
+}  
+  
+.category-box {
+    width: 75%;
+    height: 3rem;
+    margin: 0 auto;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: auto auto;
+}
+  
+.category-botton {
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 0px; 
+    padding: 10px 15px; 
+    background-color: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: medium;
+    font-weight: bold;
+    border-color: transparent;
+}
+
+.category-botton i {
+    color: #222;
+    margin: 0 8px;
+    font-size: larger;
+}
+  
+.category-botton input {
+    opacity: 0; 
+    position: absolute;
+    width: 50px;
+    height: 50px;
+}
+  
+.category-botton .type {
+    color: #222;
+    cursor: pointer;
+}
+  
+/* เปลี่ยนสีเมื่อคลิก */
+.category-botton input:checked ~ i {
+    color: #4070FF !important; /* เปลี่ยนสีไอคอน */
+}
+  
+.category-botton input:checked ~ .type {
+    color: #4070FF !important; /* เปลี่ยนสีข้อความ */
+}
+  
+.main-box {
+  width: 100%;
+  min-height: 350px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem 0;
+  margin-top: -20px; /* ดึงขึ้นไปซ้อนรูป */
+  position: relative; /* ใช้ relative แทน absolute */
+  z-index: 2;
+}
+  
+/* กล่องเลือกวันที่และเวลา */
+.date-time {
+    display: grid;
+    grid-template-columns: auto auto;
+    margin: 1rem 9rem;
+    height: 3rem;
+    border-radius: 8px;
+    border: 2px solid #D9D9D9; /* ขอบ */
+}
+
+/* ป้ายวันที่ */
+.date-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border-right: 1px solid #c4c5c6;
+    cursor: pointer;
+}
+
+/* ป้ายเวลา */
+.time-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border-left: 1px solid #c4c5c6;
+    cursor: pointer;
+}
+
+/* สไตล์สำหรับ DatePicker */
+.custom-date-picker .date-picker {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: black;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    text-align: center;
+    border: none; /* เอากรอบออก */
+    
+}
+
+/* เมื่อ DatePicker โฟกัส */
+.custom-date-picker .date-picker:focus {
+    border-color: #007bff;
+    outline: none; /* ไม่มีเส้นขอบ */
+}
+
+/* สไตล์สำหรับ Select (เวลา) ให้เหมือน DatePicker */
+.custom-time-picker select {
+    /* width: 100%; */
+    /* max-width: 200px; จำกัดขนาดความกว้างให้พอดี */
+    padding: 10px 15px;
+    font-size: 16px;
+    color: black;
+    background-color: transparent;
+    border: 2px solid #D9D9D9; /* ขอบที่สวยงาม */
+    border-radius: 6px; /* มุมมน */
+    outline: none;
+    text-align: center;
+    appearance: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* เพิ่มการเปลี่ยนสี */
+}
+
+/* ปรับสไตล์ตัวเลือกภายใน dropdown (option) */
+.custom-time-picker select option {
+    max-height: 50px; /* จำกัดความสูงของ dropdown */
+    overflow-y: auto; /* เพิ่มการเลื่อนหากมีตัวเลือกมาก */
+    display: block; /* แสดงตัวเลือกในบล็อก */
+}
+
+/* เมื่อเลือก option แล้ว */
+.custom-time-picker select option:hover {
+    background-color: #f0f0f0; /* เปลี่ยนพื้นหลังเมื่อวางเมาส์ */
+}
+
+/* เมื่อ Select โฟกัส */
+.custom-time-picker select:focus {
+    border-color: #007bff;
+    
+}
+
+/* รูปแบบเมื่อไม่ได้เลือกเวลา (placeholder) */
+.custom-time-picker select:disabled {
+    color: #999;
+}
+
+/* กรอบเมื่อเลือกแล้ว */
+.styled-select:focus {
+    border: 1px solid #007bff;
+}
+
+/* ป้ายเวลาและวันที่ */
+.date-wrapper i,
+.time-wrapper i {
+    font-size: large;
+    color: #6F6F6F;
+    margin: 0 10px;
+}
+
+/* ป้ายข้อความเวลาและวันที่ */
+.date-wrapper input,
+.time-wrapper select {
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    color: #6F6F6F;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.styled-select.no-border {
+    border: none;
+}
+
+.submit-button {
+    background-color: #007bff;
+    height: 3rem;
+    width: 50%;
+    border-radius: 8px;
+    font-size: medium;
+    color: #FFFFFF;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, tranform 0.2s;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+}
