@@ -4,41 +4,9 @@ const router = express.Router();
 
 let lastPlanData = null;  // เก็บข้อมูลล่าสุดที่ถูกส่งมา
 
-// 👉 ฟังก์ชันแปลงที่อยู่เป็นพิกัด
-async function geocodeAddress(address) {
-    const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-
-    // 🔍 Log ค่าที่จะใช้
-    console.log("📌 Address to geocode:", address);
-    console.log("🧪 Using API Key:", apiKey ? "(found)" : "(❌ NOT FOUND)");
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
-    console.log("🌐 Geocoding Request URL:", url);
-
-    try {
-        const res = await axios.get(url);
-
-        // 🔍 Log ผลลัพธ์ที่ได้จาก API
-        console.log("📦 Geocoding API response:", JSON.stringify(res.data, null, 2));
-
-        if (!res.data.results || res.data.results.length === 0) {
-            console.warn("⚠️ No results from Geocoding API for:", address);
-            return null;
-        }
-
-        const result = res.data.results[0];
-        return {
-            address: result.formatted_address,
-            lat: result.geometry.location.lat,
-            lng: result.geometry.location.lng,
-        };
-    } catch (error) {
-        console.error("❌ Geocoding error:", error.response?.data || error.message);
-        return null;
-    }
-}
-
-// ✅ API ทดสอบระบบ123
+// ✅ API ทดสอบระบบ
 router.get("/api", (req, res) => {
+    console.log("🚀 API ถูกเรียกแล้ว!");
     res.json({ message: "API ทำงานแล้ว!" });
 });
 

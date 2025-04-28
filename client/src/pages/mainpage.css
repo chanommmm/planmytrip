@@ -263,3 +263,8 @@
 .submit-button:hover {
     background-color: #0056b3;
 }
+
+.hiddenpage {
+    display: none;
+    padding-bottom: 2rem;
+}
