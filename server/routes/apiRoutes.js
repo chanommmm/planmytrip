@@ -17,32 +17,11 @@ router.post("/api/plan", (req, res) => {
 });
 
 // ✅ API ดูข้อมูลแผนการเดินทางล่าสุด + แปลงพิกัด
-router.get("/api/plan", async (req, res) => {
+router.get("/api/plan", (req, res) => {
     if (!lastPlanData) {
         return res.status(404).json({ success: false, message: "ยังไม่มีข้อมูลแผนการเดินทาง" });
     }
-
-    try {
-        const enrichedLocations = await Promise.all(
-            lastPlanData.locations.map(async (loc) => {
-                const geo = await geocodeAddress(loc.text);
-                return {
-                    ...loc,
-                    coordinates: geo,
-                };
-            })
-        );
-
-        const responseData = {
-            ...lastPlanData,
-            locations: enrichedLocations,
-        };
-
-        res.json({ success: true, data: responseData });
-    } catch (err) {
-        console.error("❌ Error during geocoding:", err.message);
-        res.status(500).json({ success: false, message: "เกิดข้อผิดพลาดขณะแปลงที่อยู่" });
-    }
+    res.json({ success: true, data: lastPlanData });
 });
 
 module.exports = router;
