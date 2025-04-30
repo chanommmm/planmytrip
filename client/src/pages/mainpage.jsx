@@ -32,12 +32,21 @@ const Mainpage = ({ sendData }) => {
     const fullDateTime = `${date.toISOString().split("T")[0]} ${time}:00`;
 
     const requestData = {
-        transport,
-        date: convertToThaiTime(fullDateTime), // ✅ แปลงเป็นโซนไทย
-        time,
-        locations: inputData.inputs,
-        avoidTolls: inputData.avoidTolls,
-    };
+      transport,
+      date: convertToThaiTime(fullDateTime),
+      time,
+      locations: inputData.inputs.map(input => ({
+          text: input.text,
+          lat: input.lat, // ✅ ส่งละติจูดไป Backend
+          lng: input.lng, // ✅ ส่งลองจิจูดไป Backend
+          number: input.number,
+          placeId: input.placeId // ✅ ส่ง `placeId` ไป Backend
+      })),
+      avoidTolls: inputData.avoidTolls,
+  };
+  
+  console.log("📌 ข้อมูลที่ส่งไป Backend:", requestData);
+  await sendData(requestData);
 
     try {
         await sendData(requestData);
@@ -152,9 +161,8 @@ const Mainpage = ({ sendData }) => {
         <Result />
         <Result />
         <Result />
-        <Footer />
       </div>
-      
+      <Footer />
     </div>
     
     
