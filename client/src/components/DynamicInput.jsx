@@ -14,15 +14,26 @@ function DynamicInput({ onDataChange }) {
 
     // ส่งข้อมูลทั้งหมดไปที่ `App.jsx`
     useEffect(() => {
+        console.log("📌 ข้อมูลสถานที่ที่ได้รับใน DynamicInput:", inputs);
         onDataChange({ inputs, avoidTolls });
     }, [JSON.stringify(inputs), avoidTolls, onDataChange]); // ใช้ `JSON.stringify` เพื่อลดการ re-render ที่ไม่จำเป็น
 
+    
+
     // ฟังก์ชันเมื่อเลือกสถานที่จาก `AutocompleteInput`
-    const handlePlaceSelect = (index, place) => {
-        if (place) {
+    const handlePlaceSelect = (index, locationData) => {
+        console.log(`🚀 สถานที่ที่เลือก (Index: ${index}):`, locationData);
+    
+        if (locationData) {
             setInputs(prevInputs => {
                 const newInputs = [...prevInputs];
-                newInputs[index].text = place;
+                newInputs[index] = { 
+                    text: locationData.text, 
+                    lat: locationData.lat,  // ✅ เก็บค่าละติจูด
+                    lng: locationData.lng,   // ✅ เก็บค่าลองจิจูด
+                    placeId: locationData.placeId, // ✅ เพิ่ม `placeId` เพื่อส่งไป Backend
+                    number: newInputs[index].number || "0" // ✅ ตรวจสอบว่ามีเวลา
+                };
                 return newInputs;
             });
         } else {

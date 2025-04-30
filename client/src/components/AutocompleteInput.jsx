@@ -17,17 +17,29 @@ const AutocompleteInput = ({ index, onSelect }) => {
         const autocomplete = new window.google.maps.places.Autocomplete(inputRef.current, {
             types: ["establishment"], // ค้นหาร้านค้า, โรงแรม, อาคาร
             componentRestrictions: { country: "TH" },
-            fields: ["formatted_address", "name", "geometry"] // ดึงข้อมูลชื่อ, ที่อยู่ และพิกัด
+            fields: ["formatted_address", "name", "geometry", "place_id"] // ดึงข้อมูลชื่อ, ที่อยู่ และพิกัด
         });
 
         autocomplete.addListener("place_changed", () => {
             const place = autocomplete.getPlace();
-            if (place?.formatted_address) {
-                onSelect(index, place.formatted_address);
-            } else {
-                console.warn("⚠️ ไม่พบข้อมูลที่อยู่ของสถานที่นี้");
+            console.log("🚀 สถานที่ที่เลือก:", place); // ✅ ตรวจสอบค่าที่ได้รับ
+        
+            if (!place.geometry) {
+                console.warn("⚠️ ไม่พบพิกัดของสถานที่นี้");
+                return;
             }
+        
+            const locationData = {
+                text: place.formatted_address, 
+                lat: place.geometry.location.lat(), // ✅ ดึงค่าละติจูด
+                lng: place.geometry.location.lng(), // ✅ ดึงค่าลองจิจูด
+                placeId: place.place_id, // ✅ เพิ่ม `place_id` เพื่อส่งไป Backend
+            };
+        
+            console.log("📌 ข้อมูลที่ส่งไป DynamicInput:", locationData);
+            onSelect(index, locationData); // ✅ ส่งข้อมูลไป `DynamicInput.jsx`
         });
+        
     }, [index, onSelect]);
 
     return (
