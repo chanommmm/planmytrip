@@ -40,7 +40,9 @@ const Mainpage = ({ sendData }) => {
           lat: input.lat, // ✅ ส่งละติจูดไป Backend
           lng: input.lng, // ✅ ส่งลองจิจูดไป Backend
           number: input.number,
-          placeId: input.placeId // ✅ ส่ง `placeId` ไป Backend
+          placeId: input.placeId, // ✅ ส่ง `placeId` ไป Backend
+          name: input.name,
+          
       })),
       avoidTolls: inputData.avoidTolls,
   };
