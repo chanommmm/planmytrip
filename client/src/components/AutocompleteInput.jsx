@@ -33,7 +33,11 @@ const AutocompleteInput = ({ index, onSelect }) => {
                 text: place.formatted_address, 
                 lat: place.geometry.location.lat(), // ✅ ดึงค่าละติจูด
                 lng: place.geometry.location.lng(), // ✅ ดึงค่าลองจิจูด
+<<<<<<< HEAD
                 placeId: place.place_id, // ✅ เพิ่ม place_id เพื่อส่งไป Backend
+=======
+                placeId: place.place_id, // ✅ เพิ่ม place_id เพื่อส่งไป Backend
+>>>>>>> 019bbc9cee79d406bffaad6f89798b2fa6359274
                 name: place.name,
             };
 

@@ -3,6 +3,7 @@ const axios = require("axios");
 const router = express.Router();
 const moment = require("moment");
 
+
 let lastPlanData = null;
 
 const GOOGLE_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
@@ -141,9 +142,11 @@ router.post("/api/plan", async (req, res) => {
     res.json({ success: true, routes: enrichedLocations, distances: allPairDistances });
 });
 
+
 // ✅ GET /api
 router.get("/api", (req, res) => {
     res.send("API is working.");
+
 });
 
 // ✅ ดึงแผนล่าสุด

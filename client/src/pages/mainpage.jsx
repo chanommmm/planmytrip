@@ -47,12 +47,22 @@ export default function Mainpage({ sendData }) {
       date: thaiDateTime,
       time,
       locations: inputData.inputs.map(input => ({
+<<<<<<< HEAD
         text: input.text,
         lat: input.lat,
         lng: input.lng,
         number: input.number,
         placeId: input.placeId,
         name: input.name,
+          
+=======
+        text: input.text,
+        lat: input.lat,
+        lng: input.lng,
+        number: input.number,
+        placeId: input.placeId,
+        name: input.name,
+>>>>>>> 019bbc9cee79d406bffaad6f89798b2fa6359274
       })),
       avoidTolls: inputData.avoidTolls,
     };
