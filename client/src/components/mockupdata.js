@@ -5,9 +5,9 @@ export const mockData = {
     distance: "38.7 กม.",
     totalDuration: "2 ชม. 10 นาที",
     steps: [
-      { label: "A", location: "จุดเริ่มต้น" },
-      { label: "B", location: "หอศิลป์กรุงเทพฯ" },
-      { label: "C", location: "วัดพระแก้ว" },
-      { label: "D", location: "จุดหมายปลายทาง" },
+      { label: "A", location: "Siam Paragon" },
+      { label: "B", location: "Victory monument" },
+      { label: "C", location: "Khao San Road" },
+      { label: "D", location: "Thammasat University" },
     ],
 };

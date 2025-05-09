@@ -32,7 +32,8 @@ function DynamicInput({ onDataChange }) {
                     lat: locationData.lat,  // ✅ เก็บค่าละติจูด
                     lng: locationData.lng,   // ✅ เก็บค่าลองจิจูด
                     placeId: locationData.placeId, // ✅ เพิ่ม `placeId` เพื่อส่งไป Backend
-                    number: newInputs[index].number || "0" // ✅ ตรวจสอบว่ามีเวลา
+                    number: newInputs[index].number || "0", // ✅ ตรวจสอบว่ามีเวลา
+                    name: locationData.name,
                 };
                 return newInputs;
             });
