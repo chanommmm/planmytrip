@@ -3,11 +3,8 @@ const axios = require("axios");
 const router = express.Router();
 const moment = require("moment");
 
-<<<<<<< HEAD
-
-=======
 let lastPlanData = null;
->>>>>>> 019bbc9cee79d406bffaad6f89798b2fa6359274
+
 
 const GOOGLE_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 
@@ -130,28 +127,12 @@ router.post("/api/plan", async (req, res) => {
 
     res.json({ success: true, routes: enrichedLocations });
 });
-
-<<<<<<< HEAD
-// ✅ API รับข้อมูลแผนการเดินทาง
-router.post("/api/plan", async (req, res) => {
-    lastPlanData = req.body; // เก็บข้อมูลแผนการเดินทางล่าสุด
-
-    const { locations } = req.body;
-
-    // ดึงข้อมูลเวลาเปิด-ปิดสำหรับแต่ละสถานที่
-    for (let i = 0; i < locations.length; i++) {
-        const placeId = locations[i].placeId;
-        const openingHours = await checkPlaceHours(placeId);
-        locations[i].opening_hours = openingHours; // เพิ่มข้อมูลเวลาเปิด-ปิดในแต่ละสถานที่
-    }
-
-    // ส่งข้อมูลสถานที่พร้อมเวลาเปิด-ปิดกลับไปยังผู้ใช้งาน
-    res.json({ success: true, routes: locations });
-=======
+    
 // ✅ ทดสอบ API
 router.get("/api", (req, res) => {
+
     res.send("API is working.");
->>>>>>> 019bbc9cee79d406bffaad6f89798b2fa6359274
+
 });
 
 // ✅ ดึงข้อมูลล่าสุด
