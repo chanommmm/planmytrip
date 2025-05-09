@@ -13,11 +13,10 @@ import moment from 'moment-timezone';
 registerLocale("th", th);
 
 export default function Mainpage({ sendData }) {
-  const [transport, setTransport] = useState("");
-  const [date, setDate] = useState(null);
-
-  const [time, setTime] = useState("");
-  const [inputData, setInputData] = useState({ inputs: [], avoidTolls: false });
+  const [transport, setTransport] = useState(""); // วิธีการเดินทาง (รถยนต์/เดิน)
+  const [date, setDate] = useState(null); // วันที่
+  const [time, setTime] = useState(""); // เวลา
+  const [inputData, setInputData] = useState({ inputs: [], avoidTolls: false }); // ข้อมูลสถานที่
 
   useEffect(() => {
     console.log("ข้อมูล Input ล่าสุด:", inputData);
@@ -98,8 +97,7 @@ export default function Mainpage({ sendData }) {
       alert("❌ เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่!");
     }
   };
-
-
+ 
   const generateTimeOptions = () => {
     const times = [];
     for (let h = 0; h < 24; h++) {
@@ -110,11 +108,8 @@ export default function Mainpage({ sendData }) {
     return times;
   };
 
-
-
-  return (
-
-    <div className="background">
+  return ( 
+    <div className="background"> 
       <HeaderInput />
 
       <div className="main-content">
@@ -152,8 +147,7 @@ export default function Mainpage({ sendData }) {
 
             <div className="main-box">
               <div className="date-time">
-
-                <label className="date-wrapper">
+                <label className="date-wrapper"> 
                   <i className="bi bi-calendar3"></i>
                   <DatePicker
                     selected={date}
@@ -164,8 +158,7 @@ export default function Mainpage({ sendData }) {
                     className="date-picker"
                   />
                 </label>
-
-
+ 
                 <label className="time-wrapper">
                   <i className="bi bi-clock"></i>
                   <select
@@ -196,13 +189,13 @@ export default function Mainpage({ sendData }) {
       </div>
 
       <div className='hiddenpage'>
-        <Result /><Result /><Result /><Result />
+        <Result />
+        <Result />
+        <Result />
+        <Result />
       </div>
 
       <Footer />
-    </div>
-
-  );
-
-
+    </div> 
+  ); 
 }
