@@ -51,8 +51,9 @@ function isPlaceOpen(openingHours, visitDateTime) {
 }
 
 // 🔄 คำนวณระยะทางระหว่างทุกคู่ของสถานที่
-async function getAllPairDistances(coords, mode, apiKey) {
-    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${coords.join('|')}&destinations=${coords.join('|')}&mode=${mode}&key=${apiKey}`;
+async function getAllPairDistances(coords, mode, apiKey, avoidTolls = false) {
+    const avoidParam = avoidTolls ? '&avoid=tolls' : '';
+    const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${coords.join('|')}&destinations=${coords.join('|')}&mode=${mode}${avoidParam}&key=${apiKey}`;
     const response = await axios.get(url);
     const data = response.data;
 
@@ -125,7 +126,8 @@ router.post("/api/plan", async (req, res) => {
     const coords = enrichedLocations.map(loc => `${loc.lat},${loc.lng}`);
     let allPairDistances = [];
     try {
-        const allDistances = await getAllPairDistances(coords, mode, GOOGLE_API_KEY);
+        const avoidTolls = plan.avoidTolls === true;
+        const allDistances = await getAllPairDistances(coords, mode, GOOGLE_API_KEY, avoidTolls);
         allPairDistances = allDistances.filter(d => d.fromIndex !== d.toIndex); // 🔥 ตัด A->A, B->B ออก
     } catch (err) {
         console.error("❌ Error calculating distances:", err.message);
