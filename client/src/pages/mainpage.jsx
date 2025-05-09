@@ -55,7 +55,7 @@ export default function Mainpage({ sendData }) {
         number: input.number,
         placeId: input.placeId,
         name: input.name,
-        
+
       })),
       avoidTolls: inputData.avoidTolls,
     };
