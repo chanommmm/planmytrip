@@ -1,132 +1,144 @@
+// src/components/DynamicInput.jsx
 import React, { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';            // <– ติดตั้งด้วย:  npm i uuid
 import './DynamicInput.css';
-import AutocompleteInput from "./AutocompleteInput";
+import AutocompleteInput from './AutocompleteInput';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
-function DynamicInput({ onDataChange }) {
-    // จัดการ Input สถานที่แต่ละจุด
-    const [inputs, setInputs] = useState([
-        { text: '', number: '' },
-        { text: '', number: '' }
-    ]);
+export default function DynamicInput({ onDataChange }) {
+  // ──────────────────────────────────────────────
+  // state หลัก
+  // ──────────────────────────────────────────────
+  const [inputs, setInputs] = useState([
+    { id: uuidv4(), text: '', number: '', locked: false },
+    { id: uuidv4(), text: '', number: '', locked: false },
+  ]);
+  const [avoidTolls, setAvoidTolls] = useState(false);
 
-    // จัดการค่าหลีกเลี่ยงค่าผ่านทาง (Checkbox)
-    const [avoidTolls, setAvoidTolls] = useState(false);
+  // ส่งข้อมูลขึ้นไปให้ parent ทุกครั้งที่เปลี่ยน
+  useEffect(() => {
+    onDataChange({ inputs, avoidTolls });
+  }, [inputs, avoidTolls, onDataChange]);
 
-    // ส่งข้อมูลทั้งหมดไปที่ `App.jsx`
-    useEffect(() => {
-        console.log("📌 ข้อมูลสถานที่ที่ได้รับใน DynamicInput:", inputs);
-        onDataChange({ inputs, avoidTolls });
-    }, [JSON.stringify(inputs), avoidTolls, onDataChange]); // ใช้ `JSON.stringify` เพื่อลดการ re-render ที่ไม่จำเป็น
-
-    
-
-    // ฟังก์ชันเมื่อเลือกสถานที่จาก `AutocompleteInput`
-    const handlePlaceSelect = (index, locationData) => {
-        console.log(`🚀 สถานที่ที่เลือก (Index: ${index}):`, locationData);
-    
-        if (locationData) {
-            setInputs(prevInputs => {
-                const newInputs = [...prevInputs];
-                newInputs[index] = { 
-                    text: locationData.text, 
-                    lat: locationData.lat,  // ✅ เก็บค่าละติจูด
-                    lng: locationData.lng,   // ✅ เก็บค่าลองจิจูด
-                    placeId: locationData.placeId, // ✅ เพิ่ม `placeId` เพื่อส่งไป Backend
-                    number: newInputs[index].number || "0", // ✅ ตรวจสอบว่ามีเวลา
-                    name: locationData.name,
-                };
-                return newInputs;
-            });
-        } else {
-            console.warn(`⚠️ ไม่พบข้อมูลที่อยู่ของสถานที่ที่เลือก (Index: ${index})`);
-        }
-    };
-
-    // ฟังก์ชันเพิ่มจุดแวะใหม่ (สูงสุด 5 จุด)
-    const addInputSet = () => {
-        if (inputs.length < 5) {
-            setInputs([...inputs, { text: '', number: '' }]);
-        } else {
-            alert('ไม่สามารถเพิ่ม Input ได้มากกว่า 5 Set');
-        }
-    };
-
-    // ฟังก์ชันลบจุดแวะ
-    const removeInputSet = (index) => {
-        setInputs(prevInputs => prevInputs.filter((_, i) => i !== index));
-    };
-
-    // สร้างตัวอักษร A, B, C, D, E ให้แต่ละตำแหน่ง
-    const generateLabel = (index) => {
-        return String.fromCharCode(65 + index);
-    };
-
-    return (
-        <div className="container-input">
-            {inputs.map((input, index) => (
-                <div className="input-set" key={index}>
-                    {/* แสดงตัวอักษรของตำแหน่ง (A, B, C, D, E) */}
-                    <div className="label-container" data-label={generateLabel(index)}>
-                        <span className="label">{generateLabel(index)}</span>
-                    </div>
-
-                    {/* AutocompleteInput สำหรับค้นหาสถานที่ */}
-                    <AutocompleteInput key={index} index={index} onSelect={(idx, place) => handlePlaceSelect(idx, place)} />
-
-                    {/* เลือกระยะเวลาที่ใช้ */}
-                    <select
-                        value={input.number}
-                        onChange={(e) =>
-                            setInputs(prevInputs => {
-                                const newInputs = [...prevInputs];
-                                newInputs[index].number = e.target.value;
-                                return newInputs;
-                            })
-                        }
-                    >
-                        <option value="">ระยะเวลาที่ใช้</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-
-                    {/* ปุ่มลบจุดแวะ */}
-                    {inputs.length > 2 && (
-                        <button className="remove-button" onClick={() => removeInputSet(index)}>
-                            <i className="bi bi-x-lg"></i>
-                        </button>
-                    )}
-                </div>
-            ))}
-
-            <div className="options-container">
-                {/* ปุ่มเพิ่มจุดแวะ */}
-                <button
-                    className="add-button"
-                    onClick={addInputSet}
-                    disabled={inputs.length >= 5}
-                >
-                    + เพิ่มจุดแวะ
-                </button>
-
-                {/* Checkbox หลีกเลี่ยงค่าผ่านทาง */}
-                <div className='checkbox-container'>
-                    <input
-                        type="checkbox"
-                        id="avoid-tolls"
-                        className="checkbox"
-                        checked={avoidTolls}
-                        onChange={(e) => setAvoidTolls(e.target.checked)}
-                    />
-                    <label htmlFor="avoid-tolls" className="checkbox-label">
-                        หลีกเลี่ยงค่าผ่านทาง
-                    </label>
-                </div>
-            </div>
-        </div>
+  // ──────────────────────────────────────────────
+  // handlers
+  // ──────────────────────────────────────────────
+  const handlePlaceSelect = (idx, place) => {
+    if (!place) return;
+    setInputs(prev =>
+      prev.map((item, i) =>
+        i === idx
+          ? { ...item, text: place.text, lat: place.lat, lng: place.lng, placeId: place.placeId, name: place.name }
+          : item
+      )
     );
-}
+  };
 
-export default DynamicInput;
+  const addInputSet = () => {
+    if (inputs.length >= 5) return alert('ไม่สามารถเพิ่ม Input ได้มากกว่า 5 จุด');
+    setInputs(prev => [...prev, { id: uuidv4(), text: '', number: '', locked: false }]);
+  };
+
+  const removeInputSet = id => {
+    if (inputs.length <= 2) return;               // กันลบจนเหลือน้อยกว่า 2 จุด
+    setInputs(prev => prev.filter(item => item.id !== id));
+  };
+
+  const toggleLock = idx => {
+    const ok = window.confirm(
+      inputs[idx].locked
+        ? `ปลดล็อกตำแหน่ง ${label(idx)} หรือไม่?`
+        : `ล็อกตำแหน่ง ${label(idx)} ไว้ที่ลำดับนี้หรือไม่?`
+    );
+    if (ok)
+      setInputs(prev =>
+        prev.map((item, i) => (i === idx ? { ...item, locked: !item.locked } : item))
+      );
+  };
+
+  // helper สร้างตัวอักษร A-B-C-…
+  const label = i => String.fromCharCode(65 + i);
+
+  // ──────────────────────────────────────────────
+  // UI
+  // ──────────────────────────────────────────────
+  return (
+    <div className="container-input">
+      {inputs.map((input, index) => (
+        <div className="input-set" key={input.id}>
+          {/* ไอคอนล็อก */}
+          <div className="lock-icon-container">
+            <i
+              className={`bi ${input.locked ? 'bi-lock' : 'bi-lock-open'}`}
+              title={input.locked ? 'ปลดล็อกตำแหน่ง' : 'ล็อกตำแหน่งนี้'}
+              onClick={() => toggleLock(index)}
+            />
+          </div>
+
+          {/* วงกลม A/B/C/... */}
+          <div
+            className={`label-container ${input.locked ? 'locked' : ''}`}
+            onClick={() => toggleLock(index)}
+            data-label={label(index)}
+          >
+            <span className="label">{label(index)}</span>
+          </div>
+
+          {/* AutocompleteInput */}
+          <div className={`autocomplete-wrapper ${index <= 1 ? 'wide-input' : ''}`}>
+            <AutocompleteInput
+              key={input.id}          // ใช้ id คงที่
+              index={index}
+              onSelect={handlePlaceSelect}
+            />
+          </div>
+
+          {/* เวลาอยู่ (ชั่วโมง) */}
+          <select
+            value={input.number}
+            onChange={e =>
+              setInputs(prev =>
+                prev.map((item, i) => (i === index ? { ...item, number: e.target.value } : item))
+              )
+            }
+          >
+            <option value="">ระยะเวลาที่ใช้</option>
+            {[1, 2, 3, 4, 5].map(n => (
+              <option key={n} value={n}>
+                {n}
+              </option>
+            ))}
+          </select>
+
+          {/* ปุ่มลบ */}
+          {inputs.length > 2 && (
+            <button className="remove-button" onClick={() => removeInputSet(input.id)}>
+              <i className="bi bi-x-lg" />
+            </button>
+          )}
+        </div>
+      ))}
+
+      {/* ปุ่มเพิ่ม & checkbox หลีกเลี่ยงค่าผ่านทาง */}
+      <div className="options-container">
+        <button className="add-button" onClick={addInputSet} disabled={inputs.length >= 5}>
+          + เพิ่มจุดแวะ
+        </button>
+
+        <div className="checkbox-container">
+          <input
+            type="checkbox"
+            id="avoid-tolls"
+            className="checkbox"
+            checked={avoidTolls}
+            onChange={e => setAvoidTolls(e.target.checked)}
+          />
+          <label htmlFor="avoid-tolls" className="checkbox-label">
+            หลีกเลี่ยงค่าผ่านทาง
+          </label>
+        </div>
+      </div>
+    </div>
+  );
+}
+ 
