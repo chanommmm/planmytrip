@@ -3,11 +3,7 @@ const axios = require("axios");
 const router = express.Router();
 const moment = require("moment");
 
-<<<<<<< HEAD
-let lastPlanData = null;
-
-=======
-// --- MinHeap สำหรับ A* ---
+//  --- MinHeap สำหรับ A* ---
 class MinHeap {
   constructor() {
     this.data = [];
@@ -47,8 +43,7 @@ class MinHeap {
     return this.data.length === 0;
   }
 }
->>>>>>> 5fd4dd46d6cd45b72fd6b884537ec7df1e57d5e4
-
+ 
 // --- Config ---
 const GOOGLE_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 let lastPlanData = null;
@@ -192,17 +187,7 @@ function formatDuration(sec) {
 router.post("/api/plan", async (req, res) => {
   try {
     const { transport, date, time, locations, avoidTolls, overrideClosed = false } = req.body;
-
-<<<<<<< HEAD
-    res.json({ success: true, routes: enrichedLocations });
-});
-    
-// ✅ ทดสอบ API
-router.get("/api", (req, res) => {
-
-    res.send("API is working.");
-
-=======
+ 
     if (!Array.isArray(locations) || !locations.length) {
       return res.status(400).json({ success: false, message: "กรุณาระบุสถานที่อย่างน้อยหนึ่งแห่ง" });
     }
@@ -286,7 +271,7 @@ router.get("/api", (req, res) => {
     console.error(e);
     res.status(500).json({ success: false, message: e.message });
   }
->>>>>>> 5fd4dd46d6cd45b72fd6b884537ec7df1e57d5e4
+  
 });
 
 // --- Endpoint: GET /api/plan ล่าสุด ---
