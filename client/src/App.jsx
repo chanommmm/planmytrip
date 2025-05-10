@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/home";
 import Mainpage from "./pages/mainpage";
 import Howto from "./pages/howto";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function App() {
   const [error, setError] = useState(null);

@@ -30,6 +30,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 /* จุดสามจุด */
@@ -158,4 +159,63 @@
 
 .remove-button:hover {
     color: #000;
+}
+/* กล่อง autocomplete ทั้งหมด */
+.autocomplete-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+
+/* กล่อง autocomplete ของจุด A และ B */
+.wide-input {
+    width: 100%;
+}
+
+/* แสดงข้อความเมื่อล็อค */
+.lock-indicator {
+    font-size: 0.85rem;
+    color: #e53935;
+    margin-top: 4px;
+}
+.label-container {
+    display: inline-block;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+
+
+.label {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* ไอคอนแม่กุญแจ */
+.lock-icon-container i {
+    font-size: 20px; /* ขนาดของไอคอน */
+    display: inline-block; /* แสดงผล */
+    color: #555; /* สีไอคอน */
+    cursor: pointer; /* เปลี่ยน cursor เมื่อ hover */
+  }
+  
+
+/* เมื่อคลิกแล้วล็อค (เพิ่ม .locked ใน label-container) */
+.label-container.locked .lock-icon-container {
+    visibility: visible !important;
+}
+
+/* สไตล์เมื่อถูกล็อค */
+.label-container.locked .label {
+    background-color: #f39c12; /* เปลี่ยนสีเมื่อถูกล็อค */
 }

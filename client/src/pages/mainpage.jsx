@@ -1,6 +1,5 @@
-// src/pages/Mainpage.jsx
-import { useState, useEffect } from 'react';
-import './mainpage.css';
+import { useState, useEffect } from 'react'; 
+import './mainpage.css'; 
 import { HeaderInput } from '../components/Header';
 import DynamicInput from '../components/DynamicInput';
 import DatePicker, { registerLocale } from "react-datepicker";
@@ -13,81 +12,95 @@ import moment from 'moment-timezone';
 registerLocale("th", th);
 
 export default function Mainpage({ sendData }) {
-  const [transport, setTransport] = useState(""); // วิธีการเดินทาง (รถยนต์/เดิน)
-  const [date, setDate] = useState(null); // วันที่
-  const [time, setTime] = useState(""); // เวลา
-  const [inputData, setInputData] = useState({ inputs: [], avoidTolls: false }); // ข้อมูลสถานที่
+  const [transport, setTransport] = useState(""); 
+  const [date, setDate] = useState(null);        
+  const [time, setTime] = useState("");          
+  const [inputData, setInputData] = useState({ inputs: [], avoidTolls: false });
+  const [planResult, setPlanResult] = useState(null);
 
   useEffect(() => {
     console.log("ข้อมูล Input ล่าสุด:", inputData);
   }, [inputData]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (overrideClosed = false) => {
+    // 1. ตรวจสอบข้อมูลเบื้องต้น
     if (!transport || !date || !time || inputData.inputs.length === 0) {
       return alert("กรุณากรอกข้อมูลให้ครบก่อนเริ่มวางแผน!");
     }
 
-    // แยก hour/minute จาก time picker ("13.30" → 13, 30)
+    // 2. สร้าง moment + format
     const [hour, minute] = time.split('.').map(n => parseInt(n, 10));
-
-    // สร้าง moment-timezone โดยใช้ date และ time
-    const visitDateTime = moment(date)
+    const visitDateTime = moment(date) 
       .tz('Asia/Bangkok')
       .hour(hour)
       .minute(minute)
-      .second(0);
+      .second(0); 
+    const thaiDateTime = visitDateTime.format('YYYY-MM-DD HH:mm:ss'); 
 
-    // ฟอร์แมตเป็น "YYYY-MM-DD HH:mm:ss"
-    const thaiDateTime = visitDateTime.format('YYYY-MM-DD HH:mm:ss');
-    console.log("🕒 visitDateTime (Asia/Bangkok):", thaiDateTime);
-
-    // สร้าง object ส่งไป backend
-    const requestData = {
+    // 3. เตรียม payload พร้อม flag overrideClosed
+    const request = {
       transport,
       date: thaiDateTime,
       time,
-      locations: inputData.inputs.map(input => ({ 
-        text: input.text,
-        lat: input.lat,
-        lng: input.lng,
-        number: input.number,
-        placeId: input.placeId,
-        name: input.name,
-      })), 
+      locations: inputData.inputs.map(i => ({
+        text: i.text,
+        lat: i.lat,
+        lng: i.lng,
+        number: i.number,
+        placeId: i.placeId,
+        name: i.name,
+      })),
       avoidTolls: inputData.avoidTolls,
+      overrideClosed,
     };
 
-    console.log("📌 ข้อมูลที่ส่งไป Backend:", requestData);
+    console.log("📌 ส่งไป backend:", request);
 
     try {
-      // ส่งข้อมูลและรับผลลัพธ์กลับ
-      const response = await sendData(requestData);
-      console.log("RESPONSE FROM BACKEND:", response);
+      const resp = await sendData(request);
+      console.log("📥 ตอบกลับ:", resp);
 
-      // ตรวจสอบโครงสร้าง: อาจได้ response.routes หรือ response.data.locations
-      const enriched = Array.isArray(response.routes)
-        ? response.routes
-        : Array.isArray(response.data?.locations)
-          ? response.data.locations
-          : [];
-
-      // เก็บชื่อสถานที่ที่ปิดไว้ในอาเรย์
-      const closedPlaces = enriched
-        .filter(loc => loc.isOpen === false)
-        .map(loc => loc.name);
-
-      // แจ้งเตือนรวมชื่อสถานที่ที่ปิด หรือ บอกว่าเปิดปกติทั้งหมด
-      if (closedPlaces.length > 0) {
-        alert(`❌ สถานที่ปิดทำการ: ${closedPlaces.join(', ')}`);
-      } else {
-        alert("✅ ทุกสถานที่เปิดปกติ พร้อมวางแผนต่อได้เลย!");
+      // 4. กรณี backend แจ้งว่ามีสถานที่ปิด
+      if (resp.success === false && Array.isArray(resp.closed)) {
+        const dateStr = visitDateTime.format('DD MMM YYYY');
+        const msg = `❌ พบสถานที่ปิดในวันที่ ${dateStr}:\n` +
+                    `${resp.closed.join(', ')}\n\n` +
+                    `ยืนยันคำนวณต่อโดยข้ามเงื่อนไขเปิด–ปิดหรือไม่?`;
+        if (window.confirm(msg)) {
+          // ยืนยันข้ามเงื่อนไข ให้เรียกซ้ำด้วย overrideClosed = true
+          return handleSubmit(true);
+        } else {
+          // ยกเลิก ให้ผู้ใช้กลับไปแก้ไข
+          return;
+        }
       }
-    } catch (err) {
-      console.error("Error sending data:", err);
-      alert("❌ เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่!");
-    }
+
+      // 5. กรณีคำนวนสำเร็จ
+      if (resp.success) {
+        setPlanResult(resp.data);
+        alert("✅ คำนวณเส้นทางสำเร็จ!");
+      } else {
+        // safety net
+        throw new Error(resp.message || "ไม่สามารถคำนวณได้");
+      }
+
+    }  catch (err) {
+      console.error("❌ Error:", err);
+
+      const confirmRetry = window.confirm(
+        "❌ ไม่สามารถหาเส้นทางที่ดีที่สุดได้ในตอนนี้\n\n" +
+        "คุณต้องการลองคำนวณใหม่โดยไม่สนเงื่อนไขทั้งหมดหรือไม่?"
+      );
+
+      if (confirmRetry && !overrideClosed) {
+        return handleSubmit(true); // ลองใหม่พร้อม override
+      } else {
+        return alert("กรุณาแก้ไขข้อมูลแล้วลองใหม่อีกครั้ง");
+      }
+    } 
+
   };
- 
+
   const generateTimeOptions = () => {
     const times = [];
     for (let h = 0; h < 24; h++) {
@@ -98,8 +111,8 @@ export default function Mainpage({ sendData }) {
     return times;
   };
 
-  return ( 
-    <div className="background"> 
+  return (
+    <div className="background">
       <HeaderInput />
 
       <div className="main-content">
@@ -108,8 +121,7 @@ export default function Mainpage({ sendData }) {
         </div>
 
         <div className="overlay-content">
-          <div className="Title">เริ่มต้นสร้างแผนการเดินทาง</div>
-
+          <div className="Title">เริ่มต้นสร้างแผนการเดินทาง</div> 
           <div className="box">
             <div className="category-box">
               <label className="category-botton">
@@ -119,26 +131,25 @@ export default function Mainpage({ sendData }) {
                   value="car"
                   onChange={e => setTransport(e.target.value)}
                 />
-                <i className="bi bi-car-front-fill"></i>
+                <i className="bi bi-car-front-fill" />
                 <span className="type">รถยนต์</span>
               </label>
-
-              <label className="category-botton">
+              <label className="category-botton"> 
                 <input
                   type="radio"
                   name="transport"
                   value="walk"
                   onChange={e => setTransport(e.target.value)}
                 />
-                <i className="bi bi-person-standing"></i>
+                <i className="bi bi-person-standing" />
                 <span className="type">เดิน</span>
               </label>
             </div>
 
             <div className="main-box">
               <div className="date-time">
-                <label className="date-wrapper"> 
-                  <i className="bi bi-calendar3"></i>
+                <label className="date-wrapper">
+                  <i className="bi bi-calendar3" />
                   <DatePicker
                     selected={date}
                     onChange={d => setDate(d)}
@@ -147,10 +158,9 @@ export default function Mainpage({ sendData }) {
                     placeholderText="เลือกวันที่เริ่มเดินทาง"
                     className="date-picker"
                   />
-                </label>
- 
+                </label> 
                 <label className="time-wrapper">
-                  <i className="bi bi-clock"></i>
+                  <i className="bi bi-clock" />
                   <select
                     value={time}
                     onChange={e => setTime(e.target.value)}
@@ -169,7 +179,7 @@ export default function Mainpage({ sendData }) {
               </div>
 
               <div className="submit-box">
-                <button className="submit-button" onClick={handleSubmit}>
+                <button className="submit-button" onClick={() => handleSubmit(false)}>
                   เริ่มต้นวางแผนการเดินทาง
                 </button>
               </div>
@@ -178,14 +188,14 @@ export default function Mainpage({ sendData }) {
         </div>
       </div>
 
-      <div className='hiddenpage'>
-        <Result />
-        <Result />
-        <Result />
-        <Result />
-      </div>
+      {/* แสดงผลลัพธ์เมื่อมี */}
+      {planResult && (
+        <div className="result-section">
+          <Result data={planResult} />
+        </div>
+      )}
 
       <Footer />
-    </div> 
-  ); 
-}
+    </div>
+  );
+} 
