@@ -43,6 +43,7 @@
     
 .main-content {
     width: 100%;
+    min-height: 95vh;
     padding: 6rem 0 3rem 0; /* เพิ่ม padding ล่างเยอะพอให้ครอบ .main-box */
     position: relative; /* สำคัญมาก เพื่อให้ absolute ผูกกับตรงนี้ */
     text-align: center;
