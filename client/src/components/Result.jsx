@@ -23,7 +23,7 @@ export default function Result({ routeData }) {
             {/* ส่วนแสดงหมายเลขเส้นทาง */}
             <div className="num-result">
               <span>เส้นทางแนะนำ {routeIndex + 1}</span>
-              <h1>{route.totalDuration}</h1>  // แสดงระยะเวลารวมแทน
+              <h1>{route.totalDuration}</h1> 
             </div>
 
 
@@ -33,7 +33,7 @@ export default function Result({ routeData }) {
                 <div className="waypoint-visual">
                   {currentRoute.map((point, index) => (
                     <React.Fragment key={index}>
-                      <div className="circle-label">{point.name}</div>
+                      <div className="circle-label">{point.position}</div>
                       {index !== currentRoute.length - 1 && (
                         <span className="arrow-icon">
                           <i className="bi bi-chevron-double-right"></i>
@@ -61,7 +61,7 @@ export default function Result({ routeData }) {
                     <React.Fragment key={index}>
                       <div className="detail-point">
                         <div className="circle-wrap">
-                          <div className="circle-label">{step.name}</div>
+                          <div className="circle-label">{step.position}</div>
                           {index < currentRoute.length - 1 && (
                             <div className="dot-separator">•<br />•<br />•</div>
                           )}

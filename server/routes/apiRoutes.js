@@ -263,6 +263,7 @@ router.post("/api/plan", async (req, res) => {
             totDur += d.durationValue;
           }
           return {
+            position: node.position,
             text: node.text,
             placeId: node.placeId,
             name: node.name,

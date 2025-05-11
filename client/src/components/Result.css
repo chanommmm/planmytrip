@@ -1,92 +1,205 @@
 /* --- กล่องหลักที่ครอบทั้งผลลัพธ์ --- */
 .info-result {
-    background-color: white;
-    width: 75%;
-    margin: 1rem auto;
-    min-height: 110px;
+  background-color: white;
+  width: 75%;
+  margin: 1rem auto;
+  min-height: 110px;
+  border: 1px solid #D9D9D9;
+  border-radius: 16px;
+  display: flex;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+  
+/* --- ส่วนแสดงลำดับเส้นทาง --- */
+.num-result {
+  flex-grow: 0.25;
+  padding: 1rem;
+  border-right: 2px solid #c6c6c6;
+  position: relative;
+  text-align: start;
+}
+  
+.num-result span {
+  color: #2ab511;
+  font-size: small;
+  font-weight: bold;
+  position: absolute;
+}
+  
+.num-result h1 {
+  color: #484848;
+  margin-top: 1rem;
+  position: relative;
+}
+  
+/* --- ส่วนแสดงเส้นทางและรายละเอียด --- */
+.path {
+  flex-grow: 4;
+  padding-left: 1rem;
+  color: #4c4c4c;
+}
+  
+.path-visual {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  flex-wrap: wrap;
+}
+  
+.waypoint-visual {
+  display: flex;
+  align-items: center;
+
+justify-content: center;
+
+  gap: 12px;
+
+  flex-wrap: wrap;
+}
+  
+.circle-label {
+  width: 28px;
+  height: 28px;
+  background-color: #4070FF;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+  
+.arrow-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+  
+.arrow-icon i {
+  font-size: 18px;
+  color: #6f6f6f;
+  margin: 0 2px;
+}
+  
+.path-visual button {
+  background-color: transparent;
+  border: none;
+  color: #484848;
+  cursor: pointer;
+}
+  
+/* --- ข้อมูลสรุปเส้นทาง --- */
+.path-info {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  margin-bottom: 0.5rem;
+}
+  
+/* --- ปุ่มเริ่มเดินทาง --- */
+.btn-result {
+  width: 10%;
+}
+  
+.btn-result button {
+  width: 100%;
+  height: 100%;
+  background-color: #4070FF;
+  border: none;
+  border-radius: 16px;
+  padding: 16px;
+  color: white;
+  cursor: pointer;
+}
+  
+.grid-btn-result {
+  display: grid;
+  grid-template-columns: auto;
+  margin: auto;
+}
+  
+.btn-result i {
+  color: white;
+  font-size: xx-large;
+}
+  
+/* --- รายละเอียดแบบแสดงผลเพิ่มเติม --- */
+.details-content {
+  margin: 1rem;
+  padding-left: 2rem;
+  /*display: flex;
+  flex-direction: column;
+  align-items: flex-start;*/
+  position: relative;
+}
+  
+.detail-point {
+  display: flex;
+  position: relative;
+  gap: 10px;
+}
+
+.detail-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+  
+.location-name {
+  font-size: medium;
+  color: #333;
+}
+  
+.dot-separator {
+  font-size: 10px;
+  color: #999;
+  text-align: center;
+  line-height: 8px;
+  margin: 6px 12px;
+  position: absolute;
+  top: 40px;
+}
+
+/*
+ /\_/\      /\_/\     |==============|   /\_/\      /\_/\      
+( •‿• )♡  ( •‿• )♡  |  RESPONSIVE  |  ( •‿• )♡  ( •‿• )♡  
+ > ^ <      > ^ <     |==============|   > ^ <      > ^ <      
+*/
+
+/* Mobile (โทรศัพท์มือถือ) */
+@media (max-width: 767px) {
+  /* รูปแบบสำหรับ Mobile */
+  .info-result {
+    width: 80%;
+    margin: 0 auto;
+    /*min-height: 110px;*/
     border: 1px solid #D9D9D9;
-    border-radius: 16px;
-    display: flex;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: grid;
+    grid-template-columns: auto;
+    /*text-align: start;*/
   }
   
   /* --- ส่วนแสดงลำดับเส้นทาง --- */
   .num-result {
-    flex-grow: 0.25;
-    padding: 1rem;
-    border-right: 2px solid #c6c6c6;
-    position: relative;
-  }
-  
-  .num-result span {
-    color: #2ab511;
-    font-size: small;
-    font-weight: bold;
-    position: absolute;
+    border-right: none;
   }
   
   .num-result h1 {
     color: #484848;
     margin-top: 1rem;
     position: relative;
+    font-size: x-large;
+
   }
   
   /* --- ส่วนแสดงเส้นทางและรายละเอียด --- */
   .path {
-    flex-grow: 4;
     padding-left: 1rem;
     color: #4c4c4c;
-  }
-  
-  .path-visual {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 0;
-    flex-wrap: wrap;
-  }
-  
-  .waypoint-visual {
-    display: flex;
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 12px;
-
-    flex-wrap: wrap;
-  }
-  
-  .circle-label {
-    width: 28px;
-    height: 28px;
-    background-color: #4070FF;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px;
-  }
-  
-  .arrow-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .arrow-icon i {
-    font-size: 18px;
-    color: #6f6f6f;
-    margin: 0 2px;
-  }
-  
-  .path-visual button {
-    background-color: transparent;
-    border: none;
-    color: #484848;
-    cursor: pointer;
   }
   
   /* --- ข้อมูลสรุปเส้นทาง --- */
@@ -99,67 +212,29 @@
   
   /* --- ปุ่มเริ่มเดินทาง --- */
   .btn-result {
-    width: 10%;
-  }
-  
-  .btn-result button {
-    width: 100%;
-    height: 100%;
-    background-color: #4070FF;
-    border: none;
-    border-radius: 16px;
-    padding: 16px;
-    color: white;
-    cursor: pointer;
+    width: 95%;
+    margin: 10px auto;
+    padding: 0 auto;
   }
   
   .grid-btn-result {
-    display: grid;
-    grid-template-columns: auto;
-    margin: auto;
+    display: flex;
+    gap: 10px;
+    margin: 0 auto;
+    width: fit-content;
+    font-size: medium;
+    font-weight: bold;
   }
   
   .btn-result i {
     color: white;
-    font-size: xx-large;
+    font-size: larger;
   }
   
   /* --- รายละเอียดแบบแสดงผลเพิ่มเติม --- */
   .details-content {
-    margin: 1rem;
-    padding-left: 2rem;
-    /*display: flex;
-    flex-direction: column;
-    align-items: flex-start;*/
-    position: relative;
+    padding-left: 0rem;
   }
   
-  .detail-point {
-    display: flex;
-    position: relative;
-    gap: 10px;
-  }
-
-  .detail-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    margin-bottom: 8px;
-  }
-  
-  .location-name {
-    font-size: medium;
-    color: #333;
-  }
-  
-  .dot-separator {
-    font-size: 10px;
-    color: #999;
-    text-align: center;
-    line-height: 8px;
-    margin: 6px 12px;
-    position: absolute;
-    top: 40px;
-  }
+}
   

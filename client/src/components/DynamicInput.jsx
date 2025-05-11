@@ -20,29 +20,48 @@ export default function DynamicInput({ onDataChange }) {
     onDataChange({ inputs, avoidTolls });
   }, [inputs, avoidTolls, onDataChange]);
 
+
   // ──────────────────────────────────────────────
   // handlers
   // ──────────────────────────────────────────────
   const handlePlaceSelect = (idx, place) => {
-    if (!place) return;
-    setInputs(prev =>
-      prev.map((item, i) =>
-        i === idx
-          ? { ...item, text: place.text, lat: place.lat, lng: place.lng, placeId: place.placeId, name: place.name }
-          : item
-      )
+  if (!place) return;
+  setInputs(prev => {
+    const updated = prev.map((item, i) =>
+      i === idx
+        ? {
+            ...item,
+            text: place.text,
+            lat: place.lat,
+            lng: place.lng,
+            placeId: place.placeId,
+            name: place.name,
+          }
+        : item
     );
-  };
+    return assignPositions(updated); // ✅ update position
+  });
+};
+
+
+  const assignPositions = inputs =>
+  inputs.map((item, index) => ({
+    ...item,
+    position: String.fromCharCode(65 + index),
+  }));
 
   const addInputSet = () => {
-    if (inputs.length >= 5) return alert('ไม่สามารถเพิ่ม Input ได้มากกว่า 5 จุด');
-    setInputs(prev => [...prev, { id: uuidv4(), text: '', number: '', locked: false }]);
-  };
+  if (inputs.length >= 5) return alert('ไม่สามารถเพิ่ม Input ได้มากกว่า 5 จุด');
+  const updated = [...inputs, { id: uuidv4(), text: '', number: '', locked: false }];
+  setInputs(assignPositions(updated)); 
+};
 
-  const removeInputSet = id => {
-    if (inputs.length <= 2) return;               // กันลบจนเหลือน้อยกว่า 2 จุด
-    setInputs(prev => prev.filter(item => item.id !== id));
-  };
+ const removeInputSet = id => {
+  if (inputs.length <= 2) return;
+  const updated = inputs.filter(item => item.id !== id);
+  setInputs(assignPositions(updated)); 
+};
+
 
   const toggleLock = idx => {
     const ok = window.confirm(
