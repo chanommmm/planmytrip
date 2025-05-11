@@ -183,6 +183,11 @@ function formatDuration(sec) {
   return `${Math.round(sec / 60)} นาที`;
 }
 
+// ✅ เพิ่ม route นี้เพื่อให้ตอบกลับ /api
+router.get("/api", (req, res) => {
+  res.json({ message: "API OK" });
+});
+
 // --- Endpoint: POST /api/plan ---
 router.post("/api/plan", async (req, res) => {
   try {
