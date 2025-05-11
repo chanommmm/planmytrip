@@ -64,6 +64,12 @@
     display: block;
 }*/
 
+.input-wrap {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+}
+
 
 /* สไตล์สำหรับ Input (Text) */
 .input-set input {
@@ -219,3 +225,108 @@ input[type="checkbox"] {
 .label-container.locked .label {
     background-color: #f39c12; /* เปลี่ยนสีเมื่อถูกล็อค */
 }
+
+
+/*
+ /\_/\      /\_/\    |==============|  /\_/\      /\_/\      
+( •‿• )♡  ( •‿• )♡ |  RESPONSIVE  | ( •‿• )♡  ( •‿• )♡  
+ > ^ <      > ^ <    |==============|  > ^ <      > ^ <      
+*/
+
+
+/* Tablet Portrait (แท็บเล็ตแนวตั้ง) */
+@media (min-width: 821px) and (max-width: 1024px) {
+    /*ยังไม่มีอะไรต้องแก้*/
+    
+}
+
+@media (min-width: 768px) and (max-width: 820px) {
+    /* รูปแบบสำหรับ Tablet */
+    .container-input {
+        margin: 1rem 2rem;
+    }
+
+    /* การจัดตำแหน่ง Checkbox และปุ่ม */
+    .options-container {
+        display: flex;
+        justify-content: space-between; /* กระจาย Checkbox และปุ่มให้ไปยังขอบซ้าย-ขวา */
+        align-items: center;
+        
+    }
+
+    /* สไตล์สำหรับ Checkbox */
+    .checkbox-container {
+        cursor: pointer;
+        color: #a1a1a1;
+    }
+
+    .checkbox {
+        width: 14px;
+        height: 14px;
+    }
+
+    .checkbox-label {
+        font-size: small;
+        cursor: pointer;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+}
+
+
+/* Mobile (โทรศัพท์มือถือ) */
+@media (max-width: 767px) {
+    /* รูปแบบสำหรับ Mobile */
+    .container-input {
+        margin: 0 1rem;
+    }
+
+    /*.input-set {
+        border: 1px solid #a1a1a1;
+        border-radius: 8px;
+        padding: 0 10px;
+    }*/
+    
+    .input-set .label {
+        width: 24px;
+        height: 24px;
+        color: #6F6F6F;
+        font-size: small;
+        font-weight: bold;
+        border: 2px solid #a1a1a1;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* จุดสามจุด */
+    /* จุดสามจุดเหนือ B, C, D , E*/
+    .label-container[data-label="B"]::before,
+    .label-container[data-label="C"]::before,
+    .label-container[data-label="D"]::before, 
+    .label-container[data-label="E"]::before {
+        display: none;
+    }
+    
+    .input-wrap {
+        display: grid;
+    }
+
+    /*.input-wrap .autocomplete-input {
+        border: none;
+    }
+
+    .input-wrap select {
+        border: none;
+    }*/
+    
+    /* การจัดตำแหน่ง Checkbox และปุ่ม */
+    .options-container {
+        margin-bottom: 10px;
+    }
+}
+
+
+

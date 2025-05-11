@@ -84,31 +84,33 @@ export default function DynamicInput({ onDataChange }) {
             <span className="label">{label(index)}</span>
           </div>
 
-          {/* AutocompleteInput */}
-          <div className={`autocomplete-wrapper ${index <= 1 ? 'wide-input' : ''}`}>
-            <AutocompleteInput
-              key={input.id}          // ใช้ id คงที่
-              index={index}
-              onSelect={handlePlaceSelect}
-            />
-          </div>
+          <div className='input-wrap'>
+            {/* AutocompleteInput */}
+            <div className={`autocomplete-wrapper ${index <= 1 ? 'wide-input' : ''}`}>
+                <AutocompleteInput
+                key={input.id}          // ใช้ id คงที่
+                index={index}
+                onSelect={handlePlaceSelect}
+                />
+            </div>
 
-          {/* เวลาอยู่ (ชั่วโมง) */}
-          <select
-            value={input.number}
-            onChange={e =>
-              setInputs(prev =>
-                prev.map((item, i) => (i === index ? { ...item, number: e.target.value } : item))
-              )
-            }
-          >
-            <option value="">ระยะเวลาที่ใช้</option>
-            {[1, 2, 3, 4, 5].map(n => (
-              <option key={n} value={n}>
-                {n}
-              </option>
-            ))}
-          </select>
+            {/* เวลาอยู่ (ชั่วโมง) */}
+            <select
+                value={input.number}
+                onChange={e =>
+                setInputs(prev =>
+                    prev.map((item, i) => (i === index ? { ...item, number: e.target.value } : item))
+                )
+                }
+            >
+                <option value="">ระยะเวลาที่ใช้</option>
+                {[1, 2, 3, 4, 5].map(n => (
+                <option key={n} value={n}>
+                    {n}
+                </option>
+                ))}
+            </select>
+          </div>
 
           {/* ปุ่มลบ */}
           {inputs.length > 2 && (
