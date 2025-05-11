@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'; 
+import { useState, useEffect } from 'react';
 import './mainpage.css'; 
 import { HeaderInput } from '../components/Header';
 import DynamicInput from '../components/DynamicInput';
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { th } from "date-fns/locale";
-import Result from '../components/Result';
+import Result from '../components/Result';  // นำ Result component มาใช้งาน
 import Footer from '../components/Footer';
 import moment from 'moment-timezone';
 
@@ -16,7 +16,7 @@ export default function Mainpage({ sendData }) {
   const [date, setDate] = useState(null);        
   const [time, setTime] = useState("");          
   const [inputData, setInputData] = useState({ inputs: [], avoidTolls: false });
-  const [planResult, setPlanResult] = useState(null);
+  const [planResult, setPlanResult] = useState(null);  // เก็บผลลัพธ์จาก backend
 
   useEffect(() => {
     console.log("ข้อมูล Input ล่าสุด:", inputData);
@@ -77,14 +77,14 @@ export default function Mainpage({ sendData }) {
 
       // 5. กรณีคำนวนสำเร็จ
       if (resp.success) {
-        setPlanResult(resp.data);
+        setPlanResult(resp.data);  // เก็บผลลัพธ์ที่คำนวณเสร็จแล้ว
         alert("✅ คำนวณเส้นทางสำเร็จ!");
       } else {
         // safety net
         throw new Error(resp.message || "ไม่สามารถคำนวณได้");
       }
 
-    }  catch (err) {
+    } catch (err) {
       console.error("❌ Error:", err);
 
       const confirmRetry = window.confirm(
@@ -98,7 +98,6 @@ export default function Mainpage({ sendData }) {
         return alert("กรุณาแก้ไขข้อมูลแล้วลองใหม่อีกครั้ง");
       }
     } 
-
   };
 
   const generateTimeOptions = () => {
@@ -191,11 +190,11 @@ export default function Mainpage({ sendData }) {
       {/* แสดงผลลัพธ์เมื่อมี */}
       {planResult && (
         <div className="result-section">
-          <Result data={planResult} />
+          <Result routeData={planResult} /> {/* ส่งผลลัพธ์ไปยัง Result */}
         </div>
       )}
 
       <Footer />
     </div>
   );
-} 
+}
