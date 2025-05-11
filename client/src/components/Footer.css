@@ -16,3 +16,17 @@
   align-items: center;
   justify-content: center;
 }
+
+/*
+ /\_/\      /\_/\     |==============|   /\_/\      /\_/\      
+( •‿• )♡  ( •‿• )♡  |  RESPONSIVE  |  ( •‿• )♡  ( •‿• )♡  
+ > ^ <      > ^ <     |==============|   > ^ <      > ^ <      
+*/
+
+/* Mobile (โทรศัพท์มือถือ) */
+@media (max-width: 767px) {
+  /* รูปแบบสำหรับ Mobile */
+  .footer-container p {
+    font-size: small;
+  }
+}
