@@ -1,3 +1,4 @@
+/* --- กล่องหลักที่ครอบทั้งผลลัพธ์ --- */
 .info-result {
     background-color: white;
     width: 75%;
@@ -7,66 +8,101 @@
     border-radius: 16px;
     display: flex;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.num-result {
-    /* width: 32%; */
+  }
+  
+  /* --- ส่วนแสดงลำดับเส้นทาง --- */
+  .num-result {
     flex-grow: 0.25;
     padding: 1rem;
     border-right: 2px solid #c6c6c6;
     position: relative;
-}
-
-.num-result span {
+  }
+  
+  .num-result span {
     color: #2ab511;
     font-size: small;
     font-weight: bold;
     position: absolute;
-}
-
-.num-result h1 {
+  }
+  
+  .num-result h1 {
     color: #484848;
     margin-top: 1rem;
     position: relative;
-
-}
-
-.path {
-    /* width: 100%; */
-    padding-left: 1rem;
-    color: #4c4c4c;
-    flex-grow: 4;
-}
-.path-visual {
-    display: flex;
-    align-items: center;       /* จัดให้ลูกอยู่ตรงกลางแนวตั้ง */
-    gap: 12px;                 /* ระยะห่างระหว่างวงกลมกับลูกศร */
-    padding: 16px 0;
-    height: auto;              /* ปล่อยความสูงอัตโนมัติ */
   }
   
+  /* --- ส่วนแสดงเส้นทางและรายละเอียด --- */
+  .path {
+    flex-grow: 4;
+    padding-left: 1rem;
+    color: #4c4c4c;
+  }
+  
+  .path-visual {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 0;
+    flex-wrap: wrap;
+  }
+  
+  .waypoint-visual {
+    display: flex;
+    align-items: center;
 
-.path-visual button {
+    justify-content: center;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+  }
+  
+  .circle-label {
+    width: 28px;
+    height: 28px;
+    background-color: #4070FF;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  .arrow-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .arrow-icon i {
+    font-size: 18px;
+    color: #6f6f6f;
+    margin: 0 2px;
+  }
+  
+  .path-visual button {
     background-color: transparent;
     border: none;
     color: #484848;
     cursor: pointer;
-    /* padding: auto;
-    height: 36x;
-    width: 36px; */
-}
-
-.path .path-info {
+  }
+  
+  /* --- ข้อมูลสรุปเส้นทาง --- */
+  .path-info {
     display: flex;
-     gap: 4px; 
-}
-
-.btn-result {
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* --- ปุ่มเริ่มเดินทาง --- */
+  .btn-result {
     width: 10%;
-    /* flex-grow: 0.25; */
-}
-
-.btn-result button {
+  }
+  
+  .btn-result button {
     width: 100%;
     height: 100%;
     background-color: #4070FF;
@@ -74,120 +110,56 @@
     border-radius: 16px;
     padding: 16px;
     color: white;
-    /* flex-grow: 0.25; */
-}
-
-.btn-result .grid-btn-result {
+    cursor: pointer;
+  }
+  
+  .grid-btn-result {
     display: grid;
     grid-template-columns: auto;
     margin: auto;
-}
-
-.btn-result i {
+  }
+  
+  .btn-result i {
     color: white;
     font-size: xx-large;
-}
-.waypoint-visual {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    /* margin-bottom: 1rem; */
-    flex-wrap: wrap;
   }
   
-.circle-label {
-  width: 28px;
-  height: 28px;
-  background-color: #4070FF;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 14px;
-}
-.arrow-icon {
-    display: flex;
-    align-items: center; /* จัดให้ชิดแนวกลางแนวตั้ง */
-    justify-content: center;
-}
-.arrow-icon i {
-    font-size: 18px;
-    color: #6f6f6f;
-    margin: 0 2px; /* เพิ่มช่องว่างเล็กน้อยซ้ายขวา */
-    /* margin-top: 14px; */
-}
-  
-
-.details-container {
-    margin-top: 1rem;
-    padding-left: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-  
-.detail-point {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-}
-  
-.detail-point .circle-label {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background-color: #4070FF;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-}
-  
-.location-name {
-    font-size: 16px;
-    color: #333;
-}
-  
-.dot-separator {
-    font-size: 20px;
-    color: #999;
-    text-align: center;
-    margin: 4px 0 8px 12px;
-}
-.details-content {
+  /* --- รายละเอียดแบบแสดงผลเพิ่มเติม --- */
+  .details-content {
     margin: 1rem;
     padding-left: 2rem;
+    /*display: flex;
+    flex-direction: column;
+    align-items: flex-start;*/
+    position: relative;
+  }
+  
+  .detail-point {
+    display: flex;
+    position: relative;
+    gap: 10px;
+  }
+
+  .detail-wrap {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-}
-.detail-point {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 4px;
-}
-.detail-point.circle-label {
-    width: 28px;
-    height: 28px;
-    background-color: #4070FF;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px;
+    gap: 4px;
+    margin-bottom: 8px;
   }
-.dot-separator {
+  
+  .location-name {
+    font-size: medium;
+    color: #333;
+  }
+  
+  .dot-separator {
     font-size: 10px;
     color: #999;
     text-align: center;
     line-height: 8px;
-    margin: 4px 0 8px 12px; /* ขยับให้ชิดใต้วงกลม */
+    margin: 6px 12px;
+    position: absolute;
+    top: 40px;
   }
+  
