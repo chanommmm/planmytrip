@@ -196,6 +196,14 @@
     transition: background-color 0.3s ease, border-color 0.3s ease; /* เพิ่มการเปลี่ยนสี */
 }
 
+.time-wrapper .styled-select {
+    width: 100%;
+    outline: none;
+    appearance: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* เพิ่มการเปลี่ยนสี */
+}
+
 /* ปรับสไตล์ตัวเลือกภายใน dropdown (option) */
 .custom-time-picker select option {
     max-height: 50px; /* จำกัดความสูงของ dropdown */
