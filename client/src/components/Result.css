@@ -151,6 +151,7 @@ justify-content: center;
   
 .location-name {
   font-size: medium;
+  font-weight: bold;
   color: #333;
 }
   
