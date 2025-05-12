@@ -101,8 +101,11 @@ function isPlaceOpen(openingHours, dt) {
 
   
 // --- ดึงข้อมูล matrix ทั้งหมด ---
-async function getAllPairDistances(coords, mode, avoidTolls = false) {
+async function getAllPairDistances(coords, mode, avoidTolls = false, departureTime = null) {
   const avoid = avoidTolls ? "&avoid=tolls" : "";
+  const depTimeParam = mode === "transit" && departureTime
+    ? `&departure_time=${Math.floor(departureTime / 1000)}`
+    : "";
   const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${coords.join("|")}&destinations=${coords.join("|")}&mode=${mode}${avoid}&key=${GOOGLE_API_KEY}`;
   const { data } = await axios.get(url);
   if (data.status !== "OK") throw new Error(data.status);
@@ -201,8 +204,10 @@ router.get("/api", (req, res) => {
 // --- Endpoint: POST /api/plan ---
 router.post("/api/plan", async (req, res) => {
     try {
-      const { transport, date, time, locations, avoidTolls, overrideClosed = false } = req.body;
-  
+      const { transport, date, time, locations, avoidTolls, departureTime, overrideClosed = false } = req.body;
+      if (transport === "transit" && !departureTime) {
+        return res.status(400).json({ success: false, message: "กรุณาระบุเวลาออกเดินทาง (departureTime) สำหรับการเดินทางโดยขนส่งสาธารณะ" });
+      }
       if (!Array.isArray(locations) || !locations.length) {
         return res.status(400).json({ success: false, message: "กรุณาระบุสถานที่อย่างน้อยหนึ่งแห่ง" });
       }
@@ -235,7 +240,9 @@ router.post("/api/plan", async (req, res) => {
   
       // สร้าง matrix
       const coords = enriched.map(l => `${l.lat},${l.lng}`);
-      const mode = transport === "walk" ? "walking" : "driving";
+      const mode = transport === "walk" ? "walking"
+           : transport === "transit" ? "transit"
+           : "driving";
       const distMat = await getAllPairDistances(coords, mode, avoidTolls);
       const straight = enriched.map(a => enriched.map(b => {
         const R = 6371, d2r = Math.PI / 180;
@@ -245,7 +252,8 @@ router.post("/api/plan", async (req, res) => {
       }));
   
       const solutions = await solveWithAStar(enriched, distMat, straight, startTime, overrideClosed);
-      if (!solutions || solutions.length === 0) throw new Error("ไม่พบเส้นทางที่เป็นไปได้");
+
+      if (!solutions || solutions.length === 0) throw new Error("ไม่พบเส้นทางการเดินทางที่เป็นไปได้ ที่สอดคล้องกับเวลาทำการของบางสถานที่ ");
 
       const optimal = solutions.map(solution => {
         let totDist = 0, totDur = 0;

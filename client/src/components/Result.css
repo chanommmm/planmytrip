@@ -113,6 +113,13 @@ justify-content: center;
   color: white;
   cursor: pointer;
 }
+
+.btn-result button:hover {
+    background-color: #0056b3;
+    border-radius: 16px;
+
+}
+
   
 .grid-btn-result {
   display: grid;
@@ -237,5 +244,5 @@ justify-content: center;
     padding-left: 0rem;
   }
   
+
 }
-  
