@@ -15,5 +15,5 @@ const PORT = 8080;
 app.listen(PORT, () => {
     console.log(`✅ Server started on port ${PORT}`);
     console.log(`🔑 Google API Key: ${process.env.GOOGLE_MAPS_API_KEY}`);
-
+    
 });
