@@ -252,6 +252,7 @@ router.post("/api/plan", async (req, res) => {
       }));
   
       const solutions = await solveWithAStar(enriched, distMat, straight, startTime, overrideClosed);
+
       if (!solutions || solutions.length === 0) throw new Error("ไม่พบเส้นทางการเดินทางที่เป็นไปได้ ที่สอดคล้องกับเวลาทำการของบางสถานที่ ");
 
       const optimal = solutions.map(solution => {
@@ -270,6 +271,7 @@ router.post("/api/plan", async (req, res) => {
             totDur += d.durationValue;
           }
           return {
+            position: node.position,
             text: node.text,
             placeId: node.placeId,
             name: node.name,

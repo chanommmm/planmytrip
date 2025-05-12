@@ -10,6 +10,14 @@ const HeaderHome = () => (
                 <div className="logo">
                         <Link to="/" className="title">Plan My Trip</Link>
                 </div>
+
+                {/* Toggle สำหรับ Hamburger menu */}
+                <input type="checkbox" id="menu-toggle" className="menu-toggle" />
+
+                <label htmlFor="menu-toggle" className="ham-icon">
+                    <i className="bi bi-list"></i>
+                </label>
+
                 <div className='right-btn'>
                     <div className="right-header">
                         <Link to="/howto" className='how-to-btn'>วิธีการใช้งาน</Link>
@@ -28,8 +36,17 @@ const HeaderInput = () => (
                 <div className="logo">
                         <Link to="/" className="title">Plan My Trip</Link>
                 </div>
+
+                {/* Toggle สำหรับ Hamburger menu */}
+                <input type="checkbox" id="menu-toggle" className="menu-toggle" />
+
+                <label htmlFor="menu-toggle" className="ham-icon">
+                    <i className="bi bi-list"></i>
+                </label>
+
                 <div className='right-btn'>
                     <div className="right-header">
+                        <Link to="/" className='home-btn'>กลับสู่หน้าหลัก</Link>
                         <Link to="/howto" className='how-to-btn'>วิธีการใช้งาน</Link>  
                     </div>
                 </div>
@@ -45,8 +62,17 @@ const HeaderHowto = () => (
                 <div className="logo">
                         <Link to="/" className="title">Plan My Trip</Link>
                 </div>
+
+                {/* Toggle สำหรับ Hamburger menu */}
+                <input type="checkbox" id="menu-toggle" className="menu-toggle" />
+
+                <label htmlFor="menu-toggle" className="ham-icon">
+                    <i className="bi bi-list"></i>
+                </label>
+
                 <div className='right-btn'>
                     <div className="right-header">
+                    <Link to="/" className='home-btn'>กลับสู่หน้าหลัก</Link>
                         <Link to="/mainpage" className="create-trip-btn">สร้างแผนการเดินทาง</Link>            
                     </div>
                 </div>

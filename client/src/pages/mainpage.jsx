@@ -54,6 +54,7 @@ export default function Mainpage({ sendData }) {
         number: i.number,
         placeId: i.placeId,
         name: i.name,
+        position: i.position,
       })),
       avoidTolls: inputData.avoidTolls,
       overrideClosed,
@@ -203,19 +204,54 @@ export default function Mainpage({ sendData }) {
                 </label>
               </div>
 
-              <div className="location-box">
-                <DynamicInput onDataChange={setInputData} />
-              </div>
+              <div className="main-box">
+                <div className="date-time">
+                  <label className="date-wrapper">
+                    <i className="bi bi-calendar3" />
+                    <DatePicker
+                      selected={date}
+                      onChange={d => setDate(d)}
+                      locale="th"
+                      dateFormat="dd MMMM yyyy"
+                      placeholderText="เลือกวันที่เริ่มเดินทาง"
+                      className="date-picker"
+                    />
+                  </label> 
+                  <label className="time-wrapper">
+                    <i className="bi bi-clock" />
+                    <select
+                      value={time}
+                      onChange={e => setTime(e.target.value)}
+                      className={`styled-select no-border ${!time ? 'placeholder' : ''}`}
+                    >
+                      <option value="" disabled>เลือกเวลาเริ่มต้น</option>
+                      {generateTimeOptions().map(t => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
 
-              <div className="submit-box">
-                <button className="submit-button" onClick={() => handleSubmit(false)}>
-                  เริ่มต้นวางแผนการเดินทาง
-                </button>
+                <div className="location-box">
+                  <DynamicInput onDataChange={setInputData} />
+                </div>
+
+                <div className="submit-box">
+                  <button className="submit-button" onClick={() => handleSubmit(false)}>
+                    เริ่มต้นวางแผนการเดินทาง
+                  </button>
+                </div>
               </div>
             </div>
+
+            {/* แสดงผลลัพธ์เมื่อมี */}
+            {planResult && (
+              <div className="result-section">
+                <Result routeData={planResult} /> {/* ส่งผลลัพธ์ไปยัง Result */}
+              </div>
+            )}
+
           </div>
-        </div>
-      </div>
 
       {/* แสดงผลลัพธ์เมื่อมี */}
       {planResult && (
