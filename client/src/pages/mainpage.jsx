@@ -131,29 +131,30 @@ export default function Mainpage({ sendData }) {
     return times;
   };
 
-  return ( 
+  return (
     <div className="background">
-      <HeaderInput /> 
-      <div className="main-content">
-        <div className="postimage">
-          <img src="/post4.jpg" alt="" />
-        </div> 
-        <div className="overlay-content">
-          <div className="Title">เริ่มต้นสร้างแผนการเดินทาง</div>
-          <div className="box">
-            <div className="category-box">
-              <label className="category-botton">
-                <input
-                  type="radio"
-                  name="transport"
-                  value="car"
-                  onChange={e => setTransport(e.target.value)}
-                />
-                <i className="bi bi-car-front-fill" />
-                <span className="type">รถยนต์</span>
-              </label>
+      <HeaderInput />
+      <div className="main-wrap">
+        <div className="main-content">
+          <div className="postimage">
+            <img src="/post4.jpg" alt="" />
+          </div>
 
-              <label className="category-botton">
+          <div className="overlay-content">
+            <div className="Title">เริ่มต้นสร้างแผนการเดินทาง</div> 
+            <div className="box">
+              <div className="category-box">
+                <label className="category-botton">
+                  <input
+                    type="radio"
+                    name="transport"
+                    value="car"
+                    onChange={e => setTransport(e.target.value)}
+                  />
+                  <i className="bi bi-car-front-fill" />
+                  <span className="type">รถยนต์</span>
+                </label>
+                <label className="category-botton">
                 <input
                   type="radio"
                   name="transport"
@@ -162,45 +163,16 @@ export default function Mainpage({ sendData }) {
                 />
                 <i className="bi bi-truck-front-fill" />
                 <span className="type">ขนส่งสาธารณะ</span>
-              </label>
-
-              <label className="category-botton">
-                <input
-                  type="radio"
-                  name="transport"
-                  value="walk"
-                  onChange={e => setTransport(e.target.value)}
-                />
-                <i className="bi bi-person-standing" />
-                <span className="type">เดิน</span>
-              </label>
-            </div>
-
-            <div className="main-box">
-              <div className="date-time">
-                <label className="date-wrapper">
-                  <i className="bi bi-calendar3" />
-                  <DatePicker
-                    selected={date}
-                    onChange={d => setDate(d)}
-                    locale="th"
-                    dateFormat="dd MMMM yyyy"
-                    placeholderText="เลือกวันที่เริ่มเดินทาง"
-                    className="date-picker"
+              </label>                
+                <label className="category-botton"> 
+                  <input
+                    type="radio"
+                    name="transport"
+                    value="walk"
+                    onChange={e => setTransport(e.target.value)}
                   />
-                </label>
-                <label className="time-wrapper">
-                  <i className="bi bi-clock" />
-                  <select
-                    value={time}
-                    onChange={e => setTime(e.target.value)}
-                    className={`styled-select no-border ${!time ? 'placeholder' : ''}`}
-                  >
-                    <option value="" disabled>เลือกเวลาเริ่มต้น</option>
-                    {generateTimeOptions().map(t => (
-                      <option key={t} value={t}>{t}</option>
-                    ))}
-                  </select>
+                  <i className="bi bi-person-standing" />
+                  <span className="type">เดิน</span>
                 </label>
               </div>
 
@@ -251,18 +223,14 @@ export default function Mainpage({ sendData }) {
               </div>
             )}
 
+            
           </div>
 
-      {/* แสดงผลลัพธ์เมื่อมี */}
-      {planResult && (
-        <div className="result-section">
-          <Result routeData={planResult} /> {/* ส่งผลลัพธ์ไปยัง Result */}
+
         </div>
-      )} 
+        <Footer />
 
-      <Footer />
-
-      {isPopupVisible && (
+        {isPopupVisible && (
         <div className="popup-overlay">
           <div className="popup-box">
             <pre className="popup-message">{popupMessage}</pre>
@@ -300,6 +268,8 @@ export default function Mainpage({ sendData }) {
           </div>
         </div>
       )}
+      
+      </div>
     </div>
   );
 }
