@@ -132,73 +132,56 @@ function mstHeuristic(remaining, straight) {
 }
     
 async function solveWithAStar(nodes, distMat, straight, startTime, overrideClosed) {
-    const N = nodes.length, ALL = (1 << N) - 1;
-    const visited = Array(1 << N).fill().map(() => Array(N).fill(Infinity));
-    const pq = new MinHeap();
-    const results = [];
-  
-    // เริ่มต้นที่จุด 0
-    visited[1][0] = startTime.valueOf();
-    pq.push({ mask: 1, last: 0, time: startTime, g: 0, prev: null },
-      mstHeuristic([...Array(N).keys()].slice(1), straight));
-  
-    while (!pq.isEmpty()) {
-      const cur = pq.pop();
-      
-      // ถ้าผ่านทั้งหมดแล้ว (mask == ALL) ให้เก็บผลลัพธ์
-      if (cur.mask === ALL) {
-        console.log('Found a complete path'); // Debug
-        const seq = [];
-        let it = cur;
-        while (it) {
-          seq.push({ idx: it.last, time: it.time });
-          it = it.prev;
-        }
-        results.push(seq.reverse().map(x => ({ node: nodes[x.idx], arrival: x.time })));
+  const N = nodes.length, ALL = (1 << N) - 1;
+  const visited = Array(1 << N).fill().map(() => Array(N).fill(Infinity));
+  const pq = new MinHeap();
+
+  visited[1][0] = startTime.valueOf();
+  pq.push({ mask: 1, last: 0, time: startTime, g: 0, prev: null },
+    mstHeuristic([...Array(N).keys()].slice(1), straight));
+
+  while (!pq.isEmpty()) {
+    const cur = pq.pop();
+
+    if (cur.mask === ALL) {
+      const seq = [];
+      let it = cur;
+      while (it) {
+        seq.push({ idx: it.last, time: it.time });
+        it = it.prev;
+      }
+      return [seq.reverse().map(x => ({ node: nodes[x.idx], arrival: x.time }))]; // ✅ return เส้นทางที่ดีที่สุดเพียง 1 เส้นทาง
+    }
+
+    for (let j = 0; j < N; j++) {
+      if (cur.mask & (1 << j)) continue;
+
+      const tm = distMat[cur.last][j].durationValue * 1000;
+      let arrival = moment(cur.time).add(tm, "ms");
+
+      if (!overrideClosed && nodes[j].opening_hours && !isPlaceOpen(nodes[j].opening_hours, arrival)) {
         continue;
       }
-  
-      // ตรวจสอบเส้นทางไปยังจุดถัดไป
-      for (let j = 0; j < N; j++) {
-        if (cur.mask & (1 << j)) continue;  // ถ้าผ่านจุดนี้แล้วข้ามไป
-        
-        const tm = distMat[cur.last][j].durationValue * 1000; // เวลาที่ใช้ในการเดินทาง (ms)
-        let arrival = moment(cur.time).add(tm, "ms");
-        
-        // เช็คเวลาเปิด-ปิดของสถานที่
-        if (!overrideClosed && nodes[j].opening_hours && !isPlaceOpen(nodes[j].opening_hours, arrival)) {
-          continue;  // ถ้าไม่เปิดให้ข้ามไป
-        }
-        
-        const srvMs = (parseFloat(nodes[j].number) || 0) * 3600 * 1000;  // เวลาที่ใช้ในการบริการ
-        let depart = arrival.clone().add(srvMs, "ms"); // เวลาที่ออกจากสถานที่
-        
-        const m2 = cur.mask | (1 << j);  // สถานะ mask ใหม่
-        const g2 = cur.g + distMat[cur.last][j].distanceValue; // ระยะทางสะสม
-        
-        // ถ้าไม่เคยไปที่จุดนี้หรือไปใหม่ในเวลาที่ดีกว่า
-        if (depart.valueOf() < visited[m2][j]) {
-          visited[m2][j] = depart.valueOf();
-          const rem = [];
-          for (let k = 0; k < N; k++) if (!(m2 & (1 << k))) rem.push(k);  // คำนวณค่าสถานที่ที่เหลือ
-          const h = mstHeuristic(rem, straight);  // คำนวณ heuristic
-          pq.push({ mask: m2, last: j, time: depart, g: g2, prev: cur }, g2 + h);
-        }
+
+      const srvMs = (parseFloat(nodes[j].number) || 0) * 3600 * 1000;
+      let depart = arrival.clone().add(srvMs, "ms");
+
+      const m2 = cur.mask | (1 << j);
+      const g2 = cur.g + distMat[cur.last][j].distanceValue;
+
+      if (depart.valueOf() < visited[m2][j]) {
+        visited[m2][j] = depart.valueOf();
+        const rem = [];
+        for (let k = 0; k < N; k++) if (!(m2 & (1 << k))) rem.push(k);
+        const h = mstHeuristic(rem, straight);
+        pq.push({ mask: m2, last: j, time: depart, g: g2, prev: cur }, g2 + h);
       }
     }
-  
-    // เลือกเส้นทางที่ดีที่สุด 5 เส้นทางจากผลลัพธ์ที่เก็บได้
-    const bestPaths = results
-      .map(seq => {
-        const totalTime = seq.reduce((acc, x) => acc.add(x.arrival.diff(startTime)), moment.duration(0));
-        return { path: seq, totalTime };
-      })
-      .sort((a, b) => a.totalTime - b.totalTime)  // จัดเรียงตามเวลาที่ใช้
-      .slice(0, 5);  // เลือก 5 เส้นทางที่ดีที่สุด
-      console.log("Total complete paths found:", results.length);
-    // ส่งผลลัพธ์ 5 เส้นทางที่ดีที่สุด
-    return bestPaths.map(item => item.path);
+  }
+
+  return []; // ❌ ไม่พบเส้นทาง
 }
+
 
   
 // --- แปลงวินาทีเป็นข้อความ ---
@@ -209,6 +192,11 @@ function formatDuration(sec) {
   }
   return `${Math.round(sec / 60)} นาที`;
 }
+
+// ✅ เพิ่ม route นี้เพื่อให้ตอบกลับ /api
+router.get("/api", (req, res) => {
+  res.json({ message: "API OK" });
+});
 
 // --- Endpoint: POST /api/plan ---
 router.post("/api/plan", async (req, res) => {
@@ -257,11 +245,11 @@ router.post("/api/plan", async (req, res) => {
       }));
   
       const solutions = await solveWithAStar(enriched, distMat, straight, startTime, overrideClosed);
-      if (!solutions || solutions.length === 0) throw new Error("ไม่พบเส้นทางที่เป็นไปได้");
-  
+      if (!solutions || solutions.length === 0) throw new Error("ไม่พบเส้นทางการเดินทางที่เป็นไปได้ ที่สอดคล้องกับเวลาทำการของบางสถานที่ ");
+
       const optimal = solutions.map(solution => {
-        let totDist = 0, totDur = 0; // Reset total distance and duration for each solution
-  
+        let totDist = 0, totDur = 0;
+
         const optimalRoute = solution.map((step, i) => {
           const { node, arrival } = step;
           const stayH = parseFloat(node.number) || 0;
@@ -269,10 +257,10 @@ router.post("/api/plan", async (req, res) => {
           if (i < solution.length - 1) {
             const next = solution[i + 1].node;
             const d = distMat[enriched.indexOf(node)][enriched.indexOf(next)];
-            travelDist = d.distanceValue; 
-            totDist += d.distanceValue; // Add to total distance of this route
-            travelDur = d.durationValue; 
-            totDur += d.durationValue; // Add to total duration of this route
+            travelDist = d.distanceValue;
+            totDist += d.distanceValue;
+            travelDur = d.durationValue;
+            totDur += d.durationValue;
           }
           return {
             text: node.text,
@@ -285,21 +273,22 @@ router.post("/api/plan", async (req, res) => {
             travelDuration: formatDuration(travelDur)
           };
         });
-  
+
         return {
           optimalRoute,
           totalDistance: (totDist / 1000).toFixed(2),
           totalDuration: formatDuration(totDur),
           feasible: optimalRoute.every(x => x.isOpenAtArrival) || overrideClosed
         };
-      }).slice(0, 5); // Get the top 5 solutions
-  
+      });
+
       res.json({
         success: true,
         data: {
-          routes: optimal,
+          routes: optimal // ✅ จะมีแค่ 1 รายการใน array นี้
         }
       });
+
   
     } catch (e) {
       console.error(e);

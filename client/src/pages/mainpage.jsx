@@ -18,25 +18,32 @@ export default function Mainpage({ sendData }) {
   const [inputData, setInputData] = useState({ inputs: [], avoidTolls: false });
   const [planResult, setPlanResult] = useState(null);  // เก็บผลลัพธ์จาก backend
 
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+  const [popupShowConfirm, setPopupShowConfirm] = useState(false); // << ปุ่มยืนยัน
+
+  
+
   useEffect(() => {
     console.log("ข้อมูล Input ล่าสุด:", inputData);
   }, [inputData]);
 
   const handleSubmit = async (overrideClosed = false) => {
     // 1. ตรวจสอบข้อมูลเบื้องต้น
+  
     if (!transport || !date || !time || inputData.inputs.length === 0) {
       return alert("กรุณากรอกข้อมูลให้ครบก่อนเริ่มวางแผน!");
     }
-
+  
     // 2. สร้าง moment + format
     const [hour, minute] = time.split('.').map(n => parseInt(n, 10));
-    const visitDateTime = moment(date) 
+    const visitDateTime = moment(date)
       .tz('Asia/Bangkok')
       .hour(hour)
       .minute(minute)
-      .second(0); 
-    const thaiDateTime = visitDateTime.format('YYYY-MM-DD HH:mm:ss'); 
-
+      .second(0);
+    const thaiDateTime = visitDateTime.format('YYYY-MM-DD HH:mm:ss');
+  
     // 3. เตรียม payload พร้อม flag overrideClosed
     const request = {
       transport,
@@ -53,51 +60,60 @@ export default function Mainpage({ sendData }) {
       avoidTolls: inputData.avoidTolls,
       overrideClosed,
     };
-
+  
     console.log("📌 ส่งไป backend:", request);
-
+  
     try {
       const resp = await sendData(request);
       console.log("📥 ตอบกลับ:", resp);
-
-      // 4. กรณี backend แจ้งว่ามีสถานที่ปิด
-      if (resp.success === false && Array.isArray(resp.closed)) {
-        const dateStr = visitDateTime.format('DD MMM YYYY');
-        const msg = `❌ พบสถานที่ปิดในวันที่ ${dateStr}:\n` +
-                    `${resp.closed.join(', ')}\n\n` +
-                    `ยืนยันคำนวณต่อโดยข้ามเงื่อนไขเปิด–ปิดหรือไม่?`;
-        if (window.confirm(msg)) {
-          // ยืนยันข้ามเงื่อนไข ให้เรียกซ้ำด้วย overrideClosed = true
-          return handleSubmit(true);
-        } else {
-          // ยกเลิก ให้ผู้ใช้กลับไปแก้ไข
-          return;
-        }
-      }
-
-      // 5. กรณีคำนวนสำเร็จ
+  
+      // 5. กรณีคำนวณสำเร็จ
       if (resp.success) {
-        setPlanResult(resp.data);  // เก็บผลลัพธ์ที่คำนวณเสร็จแล้ว
-        alert("✅ คำนวณเส้นทางสำเร็จ!");
-      } else {
-        // safety net
+        setPlanResult(resp.data);
+        
+      } else { 
         throw new Error(resp.message || "ไม่สามารถคำนวณได้");
-      }
-
+      } 
     } catch (err) {
       console.error("❌ Error:", err);
-
-      const confirmRetry = window.confirm(
-        "❌ ไม่สามารถหาเส้นทางที่ดีที่สุดได้ในตอนนี้\n\n" +
-        "คุณต้องการลองคำนวณใหม่โดยไม่สนเงื่อนไขทั้งหมดหรือไม่?"
-      );
-
-      if (confirmRetry && !overrideClosed) {
-        return handleSubmit(true); // ลองใหม่พร้อม override
+    
+      const message = err?.response?.data?.message || err?.message;
+      const closed = err?.response?.data?.closed || [];
+    
+      if (message || closed.length > 0) {
+        const popupLines = [];
+      
+        popupLines.push(<strong key="title"
+          style={{ fontSize: "22px", color: "#00000", display: "block", marginBottom: "16px" }}
+          >ไม่สามารถหาเส้นทางที่ดีที่สุดได้ในขณะนี้
+        </strong>);
+      
+        if (message) {
+          popupLines.push(<p key="reason"
+            style={{  marginBottom: "8px" }}
+          >สาเหตุ: {message}</p>);
+        }
+      
+        if (closed.length > 0) {
+          popupLines.push(<p key="subtitle">รายการสถานที่ที่ไม่ตรงเงื่อนไข:</p>);
+          closed.forEach((name, idx) => {
+            popupLines.push(<li key={`closed-${idx}`}>• {name}</li>);
+          });
+        }
+      
+        popupLines.push(
+          <p key="confirm">คุณต้องการลองคำนวณใหม่โดยไม่สนเงื่อนไขหรือไม่?</p>
+        );
+      
+        setPopupMessage(popupLines); // ส่งเป็น array ของ JSX
+        setIsPopupVisible(true);
+        setPopupShowConfirm(true);
       } else {
-        return alert("กรุณาแก้ไขข้อมูลแล้วลองใหม่อีกครั้ง");
+        alert("เกิดข้อผิดพลาดในการเชื่อมต่อกับเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้ง");
       }
-    } 
+      
+    }
+    
   };
 
   const generateTimeOptions = () => {
@@ -111,6 +127,7 @@ export default function Mainpage({ sendData }) {
   };
 
   return (
+    
     <div className="background">
       <HeaderInput />
 
@@ -193,8 +210,51 @@ export default function Mainpage({ sendData }) {
           <Result routeData={planResult} /> {/* ส่งผลลัพธ์ไปยัง Result */}
         </div>
       )}
+      
 
       <Footer />
+      {isPopupVisible && (
+  <div className="popup-overlay">
+    <div className="popup-box">
+      
+      <pre className="popup-message">{popupMessage}</pre>
+
+      {popupShowConfirm ? (
+        <div className="popup-buttons">
+          <button
+            className="popup-confirm"
+            onClick={() => {
+              setIsPopupVisible(false);
+              setPopupShowConfirm(false);
+              handleSubmit(true); // ✅ overrideClosed = true
+            }}
+          >
+            ลองคำนวณใหม่
+          </button>
+          <button
+            className="popup-close"
+            onClick={() => {
+              setIsPopupVisible(false);
+              setPopupShowConfirm(false);
+            }}
+          >
+            ยกเลิก
+          </button>
+        </div>
+      ) : (
+        <button
+          className="popup-close"
+          onClick={() => setIsPopupVisible(false)}
+        >
+          ยกเลิก
+        </button>
+      )}
+    </div>
+  </div>
+)}
+
+
+
     </div>
   );
 }

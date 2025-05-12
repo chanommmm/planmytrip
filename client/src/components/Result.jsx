@@ -1,5 +1,5 @@
 import React, { useState } from "react";
- import './Result.css';
+import './Result.css';
 
 export default function Result({ routeData }) {
   const routes = routeData?.routes || [];
@@ -11,6 +11,31 @@ export default function Result({ routeData }) {
       [index]: !prev[index],
     }));
   };
+
+  // ฟังก์ชันสำหรับสร้าง URL ของ Google Maps
+  const generateGoogleMapsLinkFromNames = (route) => {
+    const points = route.optimalRoute;
+    if (points.length < 2) return "#";
+  
+    const formatName = (name) =>
+      encodeURIComponent(name.trim().replace(/\s+/g, " "));
+  
+    const origin = formatName(points[0].name);
+    const destination = formatName(points[points.length - 1].name);
+    const waypoints = points
+      .slice(1, -1)
+      .map((p) => formatName(p.name))
+      .join("|");
+  
+    let url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`;
+    if (waypoints) {
+      url += `&waypoints=${waypoints}`;
+    }
+  
+    return url;
+  };
+  
+  
 
   return (
     <div className="result-wrapper">
@@ -25,8 +50,7 @@ export default function Result({ routeData }) {
               <span>เส้นทางแนะนำ {routeIndex + 1}</span>
               <h1>{route.totalDuration}</h1>  // แสดงระยะเวลารวมแทน
             </div>
-
-
+ 
             {/* ส่วนแสดงเส้นทาง */}
             <div className="path">
               <div className="path-visual">
@@ -72,6 +96,9 @@ export default function Result({ routeData }) {
                           <span>เดินทาง: {step.travelDistance} กม. / {step.travelDuration}</span>
                         </div>
                       </div>
+                      {index < currentRoute.length - 1 && (
+                        <div className="dot-separator">•<br />•<br />•</div>
+                      )}
                     </React.Fragment>
                   ))}
                 </div>
@@ -80,12 +107,16 @@ export default function Result({ routeData }) {
 
             {/* ปุ่มเริ่มเดินทาง */}
             <div className="btn-result">
-              <button>
-                <div className="grid-btn-result">
-                  <i className="bi bi-car-front-fill"></i>
-                  <span>เริ่มเดินทาง</span>
-                </div>
-              </button>
+            <a href={generateGoogleMapsLinkFromNames(route)} target="_blank" rel="noopener noreferrer">
+            <button>
+              <div className="grid-btn-result">
+              <i className="bi bi-car-front-fill"></i>
+              <span>เริ่มเดินทาง</span>
+              </div>
+            </button>
+            </a>
+
+
             </div>
           </div>
         );
