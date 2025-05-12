@@ -51,7 +51,7 @@ export default function DynamicInput({ onDataChange }) {
   }));
 
   const addInputSet = () => {
-  if (inputs.length >= 5) return alert('ไม่สามารถเพิ่ม Input ได้มากกว่า 5 จุด');
+  if (inputs.length >= 10) return alert('ไม่สามารถเพิ่ม Input ได้มากกว่า 10 จุด');
   const updated = [...inputs, { id: uuidv4(), text: '', number: '', locked: false }];
   setInputs(assignPositions(updated)); 
 };
@@ -142,7 +142,7 @@ export default function DynamicInput({ onDataChange }) {
 
       {/* ปุ่มเพิ่ม & checkbox หลีกเลี่ยงค่าผ่านทาง */}
       <div className="options-container">
-        <button className="add-button" onClick={addInputSet} disabled={inputs.length >= 5}>
+        <button className="add-button" onClick={addInputSet} disabled={inputs.length >= 10}>
           + เพิ่มจุดแวะ
         </button>
 
