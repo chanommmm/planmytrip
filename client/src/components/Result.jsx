@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import './Result.css';
 
-export default function Result({ routeData }) {
+export default function Result({ routeData, travelMode }) {
   const routes = routeData?.routes || [];
   const [showDetailsMap, setShowDetailsMap] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [selectedRoute, setSelectedRoute] = useState(null);
 
   const toggleDetails = (index) => {
     setShowDetailsMap(prev => ({
@@ -34,8 +36,35 @@ export default function Result({ routeData }) {
   
     return url;
   };
-  
-  
+
+  const handleStartJourney = (route) => {
+    // เช็คว่าเป็นการเลือก Public Transit หรือไม่
+    console.log("Selected travel mode:", travelMode); // เพิ่ม console.log
+    if (travelMode === "TRANSIT") {
+      console.log("Public Transit Selected, Showing Modal");
+      setSelectedRoute(route);  // เก็บเส้นทางที่เลือก
+      setShowModal(true);        // เปิด Modal แจ้งเตือน
+    } else {
+      // ถ้าไม่ใช่ Public Transit ให้ลิงค์ไป Google Maps ทันที
+      console.log("Travel mode is not transit, opening Google Maps directly");
+      window.open(generateGoogleMapsLinkFromNames(route), "_blank");
+    }
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedRoute(null); // ล้างการเลือกเส้นทางเมื่อปิด Modal
+  };
+
+  const confirmStartJourney = () => {
+    if (selectedRoute) {
+      console.log("Starting journey with selected route:", selectedRoute);
+      // ลิงค์ไปยัง Google Maps
+      window.open(generateGoogleMapsLinkFromNames(selectedRoute), "_blank");
+    }
+    setShowModal(false);
+    setSelectedRoute(null);
+  };
 
   return (
     <div className="result-wrapper">
@@ -48,9 +77,9 @@ export default function Result({ routeData }) {
             {/* ส่วนแสดงหมายเลขเส้นทาง */}
             <div className="num-result">
               <span>เส้นทางแนะนำ {routeIndex + 1}</span>
-              <h1>{route.totalDuration}</h1>  // แสดงระยะเวลารวมแทน
+              <h1>{route.totalDuration}</h1>  {/* แสดงระยะเวลารวม */}
             </div>
- 
+
             {/* ส่วนแสดงเส้นทาง */}
             <div className="path">
               <div className="path-visual">
@@ -107,17 +136,31 @@ export default function Result({ routeData }) {
 
             {/* ปุ่มเริ่มเดินทาง */}
             <div className="btn-result">
-            <a href={generateGoogleMapsLinkFromNames(route)} target="_blank" rel="noopener noreferrer">
-            <button>
-              <div className="grid-btn-result">
-              <i className="bi bi-car-front-fill"></i>
-              <span>เริ่มเดินทาง</span>
-              </div>
-            </button>
-            </a>
-
-
+              <button onClick={() => handleStartJourney(route)}>
+                <div className="grid-btn-result">
+                  <i className="bi bi-car-front-fill"></i>
+                  <span>เริ่มเดินทาง</span>
+                </div>
+              </button>
             </div>
+
+            {/* Modal Popup แจ้งเตือน */}
+            {showModal && (
+              <div className="modal-overlay">
+                <div className="modal-content">
+                  <span className="close" onClick={closeModal}>&times;</span>
+                  <h2>หมายเหตุ</h2>
+                  <p>
+                    ใน Google Maps API, เมื่อเลือกใช้ Public Transit (รถสาธารณะ) เป็นวิธีการเดินทาง,
+                    ระบบจะไม่อนุญาตให้เพิ่มจุดแวะ (waypoints) ในเส้นทางได้เนื่องจากข้อจำกัดของระบบการเดินทางสาธารณะ
+                    เช่น รถเมล์ หรือ รถไฟ ซึ่งมีเส้นทางที่กำหนดไว้ล่วงหน้าและมีเวลาที่แน่นอนในการเดินทางระหว่างจุดต่าง ๆ
+                    การปรับเปลี่ยนเส้นทางเหล่านี้ด้วยจุดแวะเพิ่มเติมอาจทำให้ระบบไม่สามารถคำนวณเส้นทางที่สามารถใช้บริการสาธารณะได้อย่างแม่นยำ
+                  </p>
+                  <button onClick={closeModal}>ปิด</button>
+                  <button onClick={confirmStartJourney}>ยืนยันและเริ่มเดินทาง</button>
+                </div>
+              </div>
+            )}
           </div>
         );
       })}
