@@ -19,31 +19,50 @@ export default function DynamicInput({ onDataChange }) {
   useEffect(() => {
     onDataChange({ inputs, avoidTolls });
   }, [inputs, avoidTolls, onDataChange]);
- 
+
+
   // ──────────────────────────────────────────────
   // handlers
   // ──────────────────────────────────────────────
   const handlePlaceSelect = (idx, place) => {
-    if (!place) return;
-    setInputs(prev =>
-      prev.map((item, i) =>
-        i === idx
-          ? { ...item, text: place.text, lat: place.lat, lng: place.lng, placeId: place.placeId, name: place.name }
-          : item
-      )
+  if (!place) return;
+  setInputs(prev => {
+    const updated = prev.map((item, i) =>
+      i === idx
+        ? {
+            ...item,
+            text: place.text,
+            lat: place.lat,
+            lng: place.lng,
+            placeId: place.placeId,
+            name: place.name,
+          }
+        : item
     );
-  };
- 
-  const addInputSet = () => {
-    if (inputs.length >= 5) return alert('ไม่สามารถเพิ่ม Input ได้มากกว่า 5 จุด');
-    setInputs(prev => [...prev, { id: uuidv4(), text: '', number: '', locked: false }]);
-  };
+    return assignPositions(updated); // ✅ update position
+  });
+};
 
-  const removeInputSet = id => {
-    if (inputs.length <= 2) return;               // กันลบจนเหลือน้อยกว่า 2 จุด
-    setInputs(prev => prev.filter(item => item.id !== id));
-  };
- 
+
+  const assignPositions = inputs =>
+  inputs.map((item, index) => ({
+    ...item,
+    position: String.fromCharCode(65 + index),
+  }));
+
+  const addInputSet = () => {
+  if (inputs.length >= 10) return alert('ไม่สามารถเพิ่ม Input ได้มากกว่า 10 จุด');
+  const updated = [...inputs, { id: uuidv4(), text: '', number: '', locked: false }];
+  setInputs(assignPositions(updated)); 
+};
+
+ const removeInputSet = id => {
+  if (inputs.length <= 2) return;
+  const updated = inputs.filter(item => item.id !== id);
+  setInputs(assignPositions(updated)); 
+};
+
+
   const toggleLock = idx => {
     const ok = window.confirm(
       inputs[idx].locked
@@ -84,14 +103,14 @@ export default function DynamicInput({ onDataChange }) {
             <span className="label">{label(index)}</span>
           </div>
 
-          <div className='input-wrap'>
+          <div className="input-wrap">
             {/* AutocompleteInput */}
             <div className={`autocomplete-wrapper ${index <= 1 ? 'wide-input' : ''}`}>
-                <AutocompleteInput
+              <AutocompleteInput
                 key={input.id}          // ใช้ id คงที่
                 index={index}
                 onSelect={handlePlaceSelect}
-                />
+              />
             </div>
 
             {/* เวลาอยู่ (ชั่วโมง) */}
@@ -145,7 +164,7 @@ export default function DynamicInput({ onDataChange }) {
 
       {/* ปุ่มเพิ่ม & checkbox หลีกเลี่ยงค่าผ่านทาง */}
       <div className="options-container">
-        <button className="add-button" onClick={addInputSet} disabled={inputs.length >= 5}>
+        <button className="add-button" onClick={addInputSet} disabled={inputs.length >= 10}>
           + เพิ่มจุดแวะ
         </button>
 
@@ -164,5 +183,4 @@ export default function DynamicInput({ onDataChange }) {
       </div>
     </div>
   );
-}
- 
+} 
