@@ -226,6 +226,7 @@ export default function Mainpage({ sendData }) {
             
           </div>
 
+
         </div>
         <Footer />
 
