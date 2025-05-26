@@ -1,10 +1,11 @@
 {
-  "welcome": "Welcome to Plan my trip!",
-  "submit": "Submit",
-  "duration": "Stay duration",
-  "place": "Place",
-  "how_to_use": "How to use",
-  "create_trip_btn": "Start create plan",
-  "Homepage_btn": "Back to Home page"
-
+    "welcome": "Welcome to Plan my trip!",
+    "submit": "Submit",
+    "duration": "Stay duration",
+    "place": "Place",
+    "how_to_use": "How to use",
+    "create_trip_btn": "Start create plan",
+    "Homepage_btn": "Back to Home page",
+    "about_us": "เกี่ยวกับเรา",
+    "Banner_homepage": "Start to crate your plan"
 }
