@@ -64,16 +64,18 @@ export default function DynamicInput({ onDataChange }) {
 
 
   const toggleLock = idx => {
-    const ok = window.confirm(
-      inputs[idx].locked
-        ? `ปลดล็อกตำแหน่ง ${label(idx)} หรือไม่?`
-        : `ล็อกตำแหน่ง ${label(idx)} ไว้ที่ลำดับนี้หรือไม่?`
+  if (idx === 0) return; // ห้ามล็อกตำแหน่งแรก
+  const ok = window.confirm(
+    inputs[idx].locked
+      ? `ปลดล็อกตำแหน่ง ${label(idx)} หรือไม่?`
+      : `ล็อกตำแหน่ง ${label(idx)} ไว้ที่ลำดับนี้หรือไม่?`
+  );
+  if (ok)
+    setInputs(prev =>
+      prev.map((item, i) => (i === idx ? { ...item, locked: !item.locked } : item))
     );
-    if (ok)
-      setInputs(prev =>
-        prev.map((item, i) => (i === idx ? { ...item, locked: !item.locked } : item))
-      );
   };
+
 
   // helper สร้างตัวอักษร A-B-C-…
   const label = i => String.fromCharCode(65 + i);
@@ -87,21 +89,23 @@ export default function DynamicInput({ onDataChange }) {
         <div className="input-set" key={input.id}>
           {/* ไอคอนล็อก */}
           <div className="lock-icon-container">
-            <i
-              className={`bi ${input.locked ? 'bi-lock' : 'bi-lock-open'}`}
-              title={input.locked ? 'ปลดล็อกตำแหน่ง' : 'ล็อกตำแหน่งนี้'}
-              onClick={() => toggleLock(index)}
-            />
+              <i
+                className={`bi ${input.locked ? 'bi-lock' : 'bi-lock-open'}`}
+                title={input.locked ? 'ปลดล็อกตำแหน่ง' : 'ล็อกตำแหน่งนี้'}
+                onClick={() => toggleLock(index)}
+              />
           </div>
 
           {/* วงกลม A/B/C/... */}
           <div
             className={`label-container ${input.locked ? 'locked' : ''}`}
-            onClick={() => toggleLock(index)}
+            onClick={() => index > 0 && toggleLock(index)} // ป้องกันคลิกตำแหน่งแรก
             data-label={label(index)}
           >
             <span className="label">{label(index)}</span>
+            {index > 0 && <span className="tooltiptext">ล็อกหรือปลดล็อกตำแหน่งนี้</span>}
           </div>
+
 
           <div className="input-wrap">
             {/* AutocompleteInput */}
