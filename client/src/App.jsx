@@ -6,6 +6,7 @@ import Home from "./pages/home";
 import Mainpage from "./pages/mainpage";
 import Howto from "./pages/howto";
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import './i18n';
 
 function App() {
   const [error, setError] = useState(null);
