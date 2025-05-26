@@ -47,8 +47,9 @@ export default function DynamicInput({ onDataChange }) {
   const assignPositions = inputs =>
   inputs.map((item, index) => ({
     ...item,
-    position: String.fromCharCode(65 + index),
+    position: index, 
   }));
+
 
   const addInputSet = () => {
     if (inputs.length >= 10) return alert('ไม่สามารถเพิ่ม Input ได้มากกว่า 10 จุด');
