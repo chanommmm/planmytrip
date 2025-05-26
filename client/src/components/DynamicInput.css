@@ -38,7 +38,12 @@
 .label-container[data-label="B"]::before,
 .label-container[data-label="C"]::before,
 .label-container[data-label="D"]::before, 
-.label-container[data-label="E"]::before {
+.label-container[data-label="E"]::before,
+.label-container[data-label="F"]::before,
+.label-container[data-label="G"]::before,
+.label-container[data-label="H"]::before,
+.label-container[data-label="I"]::before,
+.label-container[data-label="J"]::before{
 
     content: "︙";
     font-size: 16px;
@@ -49,6 +54,7 @@
     transform: translateX(-50%);
     display: block; /* เปลี่ยนจาก `none` เป็น `block` */
 }
+
 /* .label::after {
     content: "︙";
     font-size: 16px;
