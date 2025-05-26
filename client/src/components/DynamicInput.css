@@ -212,6 +212,8 @@ input[type="checkbox"] {
     display: inline-block; /* แสดงผล */
     color: #555; /* สีไอคอน */
     cursor: pointer; /* เปลี่ยน cursor เมื่อ hover */
+    position: absolute;
+    transform: translateX(-100%) translateY(-55%);
   }
   
 
@@ -222,7 +224,9 @@ input[type="checkbox"] {
 
 /* สไตล์เมื่อถูกล็อค */
 .label-container.locked .label {
-    background-color: #f39c12; /* เปลี่ยนสีเมื่อถูกล็อค */
+    background-color: #007bff; /* เปลี่ยนสีเมื่อถูกล็อค */
+    color: #f3f3f3;
+    border-color: #4070FF;
 }
 
 
