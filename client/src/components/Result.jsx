@@ -66,6 +66,10 @@ export default function Result({ routeData, travelMode }) {
     setSelectedRoute(null);
   };
 
+  const convertPositionToLetter = (position) => {
+    return String.fromCharCode(65 + position); // ✅ 'A' = 65, 'B' = 66, ...
+  };
+
   return (
     <div className="result-wrapper">
       {routes.map((route, routeIndex) => {
@@ -86,7 +90,7 @@ export default function Result({ routeData, travelMode }) {
                 <div className="waypoint-visual">
                   {currentRoute.map((point, index) => (
                     <React.Fragment key={index}>
-                      <div className="circle-label">{point.position}</div>
+                      <div className="circle-label">{convertPositionToLetter(point.position)}</div>
                       {index !== currentRoute.length - 1 && (
                         <span className="arrow-icon">
                           <i className="bi bi-chevron-double-right"></i>
@@ -114,7 +118,7 @@ export default function Result({ routeData, travelMode }) {
                     <React.Fragment key={index}>
                       <div className="detail-point">
                         <div className="circle-wrap">
-                          <div className="circle-label">{step.position}</div>
+                          <div className="circle-label">{convertPositionToLetter(step.position)}</div>
                           {index < currentRoute.length - 1 && (
                             <div className="dot-separator">•<br />•<br />•</div>
                           )}

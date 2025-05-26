@@ -51,10 +51,11 @@ export default function Mainpage({ sendData }) {
         text: i.text,
         lat: i.lat,
         lng: i.lng,
-        number: i.number,
+        number: i.number || "0",
         placeId: i.placeId,
         name: i.name,
         position: i.position,
+        locked: i.locked || false,
       })),
       avoidTolls: inputData.avoidTolls,
       overrideClosed,
@@ -272,4 +273,4 @@ export default function Mainpage({ sendData }) {
       </div>
     </div>
   );
-}
+} 
