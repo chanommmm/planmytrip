@@ -522,7 +522,18 @@
     }  
       
     .category-box {
-        width: 80%;
+        width: 80%;  
+    }
+
+    /* .category-botton{
+        display: grid;
+        grid-template-columns: auto;
+        gap: 0;
+    } */
+
+    .category-box .type{
+        display: none;
+        /* display: block; */
     }
 
     .main-box {

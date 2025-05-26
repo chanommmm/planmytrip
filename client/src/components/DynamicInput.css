@@ -13,10 +13,12 @@
 }
 
 .label-container {
-    display: flex;
-    flex-direction: column; /* จัดให้ตัวอักษรอยู่ข้างล่าง จุดสามจุด */
-    align-items: center; /* จัดให้อยู่ตรงกลาง */
-    position: relative; /* ใช้ Absolute Positioning */
+    display: flex inline-block;
+    flex-direction: column; 
+    align-items: center; 
+    position: relative; 
+    /* position: relative;
+    display: inline-block; */
 }
 
 .input-set .label {
@@ -33,11 +35,32 @@
     position: relative;
 }
 
+.tooltiptext{
+    visibility: hidden;
+    min-width: 200px;
+    background-color: #6F6F6F;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    font-size: small;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.label-container:hover .tooltiptext {
+  visibility: visible;
+}
+
 /* จุดสามจุด */
 /* จุดสามจุดเหนือ B, C, D , E*/
 .label-container[data-label="B"]::before,
 .label-container[data-label="C"]::before,
-.label-container[data-label="D"]::before, 
+.label-container[data-label="D"]::before,
 .label-container[data-label="E"]::before,
 .label-container[data-label="F"]::before,
 .label-container[data-label="G"]::before,
@@ -52,7 +75,7 @@
     top: -30px; /* ย้ายขึ้นด้านบน */
     left: 50%;
     transform: translateX(-50%);
-    display: block; /* เปลี่ยนจาก `none` เป็น `block` */
+    display: block;
 }
 
 /* .label::after {
@@ -307,8 +330,13 @@ input[type="checkbox"] {
     /* จุดสามจุดเหนือ B, C, D , E*/
     .label-container[data-label="B"]::before,
     .label-container[data-label="C"]::before,
-    .label-container[data-label="D"]::before, 
-    .label-container[data-label="E"]::before {
+    .label-container[data-label="D"]::before,
+    .label-container[data-label="E"]::before,
+    .label-container[data-label="F"]::before,
+    .label-container[data-label="G"]::before,
+    .label-container[data-label="H"]::before,
+    .label-container[data-label="I"]::before,
+    .label-container[data-label="J"]::before{
         display: none;
     }
     
