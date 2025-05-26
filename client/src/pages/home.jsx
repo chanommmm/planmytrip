@@ -2,8 +2,13 @@ import React from "react";
 import "./home.css";
 import Footer from "../components/Footer";
 import { HeaderHome } from "../components/Header";
+import { useTranslation } from 'react-i18next';
 
 const Home = () => {
+  const { t, i18n } = useTranslation();
+    const changeLanguage = (lng) => {
+      i18n.changeLanguage(lng);
+  };
   return (
     <>
 
@@ -19,7 +24,7 @@ const Home = () => {
           </a>
         </div>
         <div className="about-bar">
-          <a href="#about" className="about-link">เกี่ยวกับเรา</a>
+          <a href="#about" className="about-link">{t('about_us')}</a>
         </div>
       </div>
 
@@ -30,11 +35,11 @@ const Home = () => {
             <img src="/city.jpg" alt="Image description" />
           </div>
           <div className="banner-right">
-            <h2>เริ่มต้นสร้างแผนการเดินทางของคุณ</h2>
+            <h2>{t('Banner_homepage')}</h2>
             <p>
               ด้วยการสร้างแผนการที่ง่ายพร้อมคำแนะนำเส้นทางต่างๆ ด้วยตัวของคุณเอง
             </p>
-            <a href="#create-trip" className="create-trip-btn">สร้างแผนการเดินทาง</a>
+            <a href="#create-trip" className="create-trip-btn">{t('create_trip_btn')}</a>
           </div>
         </div>
       </div>
