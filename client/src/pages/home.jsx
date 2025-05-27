@@ -37,7 +37,7 @@ const Home = () => {
           <div className="banner-right">
             <h2>{t('Banner_homepage')}</h2>
             <p>
-              ด้วยการสร้างแผนการที่ง่ายพร้อมคำแนะนำเส้นทางต่างๆ ด้วยตัวของคุณเอง
+              {t('Banner2_homepage')}
             </p>
             <a href="#create-trip" className="create-trip-btn">{t('create_trip_btn')}</a>
           </div>
@@ -46,96 +46,96 @@ const Home = () => {
 
       {/* Popular Places */}
       <div className="popular-places">
-        <h2 className="title">สถานที่ท่องเที่ยวยอดนิยม</h2>
+        <h2 className="title">{t('title1')}</h2>
         <div className="places-container">
           <div className="place-box">
             <img src="/bkk.jpg" alt="สถานที่ 1" />
-            <p className="place-name">วัดพระแก้ว</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place1')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/bkk1.jpg" alt="สถานที่ 2" />
-            <p className="place-name">วัดอรุณ</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place2')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/hkt.jpg" alt="สถานที่ 3" />
-            <p className="place-name">อ่าวนาง</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place3')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/cnx1.jpg" alt="สถานที่ 4" />
-            <p className="place-name">ดอยอินทนนท์</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place4')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           {/* Additional places */}
           <div className="place-box">
             <img src="/bkk.jpg" alt="สถานที่ 1" />
-            <p className="place-name">วัดพระแก้ว</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place1')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/bkk1.jpg" alt="สถานที่ 2" />
-            <p className="place-name">วัดอรุณ</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place2')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/hkt.jpg" alt="สถานที่ 3" />
-            <p className="place-name">อ่าวนาง</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place3')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/cnx1.jpg" alt="สถานที่ 4" />
-            <p className="place-name">ดอยอินทนนท์</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place4')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
         </div>
       </div>
 
       {/* Popular Cafes */}
       <div className="popular-places">
-        <h2 className="title">คาเฟ่ยอดนิยม</h2>
+        <h2 className="title">{t('title2')}</h2>
         <div className="places-container">
           <div className="place-box">
             <img src="/bkk.jpg" alt="สถานที่ 1" />
-            <p className="place-name">วัดพระแก้ว</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place1')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/bkk1.jpg" alt="สถานที่ 2" />
-            <p className="place-name">วัดอรุณ</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place2')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/hkt.jpg" alt="สถานที่ 3" />
-            <p className="place-name">อ่าวนาง</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place3')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/cnx1.jpg" alt="สถานที่ 4" />
-            <p className="place-name">ดอยอินทนนท์</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place4')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           {/* Additional places */}
           <div className="place-box">
             <img src="/bkk.jpg" alt="สถานที่ 1" />
-            <p className="place-name">วัดพระแก้ว</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place1')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/bkk1.jpg" alt="สถานที่ 2" />
-            <p className="place-name">วัดอรุณ</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place2')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/hkt.jpg" alt="สถานที่ 3" />
-            <p className="place-name">อ่าวนาง</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place3')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
           <div className="place-box">
             <img src="/cnx1.jpg" alt="สถานที่ 4" />
-            <p className="place-name">ดอยอินทนนท์</p>
-            <p className="place-description">สถานที่ท่องเที่ยวที่เต็มไปด้วยวัฒนธรรมและชีวิตเมือง</p>
+            <p className="place-name">{t('place4')}</p>
+            <p className="place-description">{t('description1')}</p>
           </div>
         </div>
       </div>

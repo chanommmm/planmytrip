@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';            // <– ติดตั้งด
 import './DynamicInput.css';
 import AutocompleteInput from './AutocompleteInput';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useTranslation } from 'react-i18next';
 
 export default function DynamicInput({ onDataChange }) {
   // ──────────────────────────────────────────────
@@ -14,6 +15,11 @@ export default function DynamicInput({ onDataChange }) {
     { id: uuidv4(), text: '', number: '', locked: false },
   ]);
   const [avoidTolls, setAvoidTolls] = useState(false);
+
+  const { t, i18n } = useTranslation();
+    const changeLanguage = (lng) => {
+      i18n.changeLanguage(lng);
+  };
 
   // ส่งข้อมูลขึ้นไปให้ parent ทุกครั้งที่เปลี่ยน
   useEffect(() => {
@@ -52,7 +58,7 @@ export default function DynamicInput({ onDataChange }) {
 
 
   const addInputSet = () => {
-    if (inputs.length >= 10) return alert('ไม่สามารถเพิ่ม Input ได้มากกว่า 10 จุด');
+    if (inputs.length >= 10) return alert(t('alert5'));
     const updated = [...inputs, { id: uuidv4(), text: '', number: '', locked: false }];
     setInputs(assignPositions(updated)); 
   };
@@ -68,8 +74,10 @@ export default function DynamicInput({ onDataChange }) {
   if (idx === 0) return; // ห้ามล็อกตำแหน่งแรก
   const ok = window.confirm(
     inputs[idx].locked
-      ? `ปลดล็อกตำแหน่ง ${label(idx)} หรือไม่?`
-      : `ล็อกตำแหน่ง ${label(idx)} ไว้ที่ลำดับนี้หรือไม่?`
+      // ? `ปลดล็อกตำแหน่ง ${label(idx)} หรือไม่?`
+      // : `ล็อกตำแหน่ง ${label(idx)} ไว้ที่ลำดับนี้หรือไม่?`
+      ? t('unlockConfirm', { label: label(idx) })
+      : t('lockConfirm', { label: label(idx) })
   );
   if (ok)
     setInputs(prev =>
@@ -92,9 +100,9 @@ export default function DynamicInput({ onDataChange }) {
           <div className="lock-icon-container">
               <i
                 className={`bi ${input.locked ? 'bi-lock' : 'bi-lock-open'}`}
-                title={input.locked ? 'ปลดล็อกตำแหน่ง' : 'ล็อกตำแหน่งนี้'}
+                title={input.locked ? t('unlockPosition') : t('lockPosition')}
                 onClick={() => toggleLock(index)}
-              />
+              /> 
           </div>
 
           {/* วงกลม A/B/C/... */}
@@ -104,7 +112,7 @@ export default function DynamicInput({ onDataChange }) {
             data-label={label(index)}
           >
             <span className="label">{label(index)}</span>
-            {index > 0 && <span className="tooltiptext">ล็อกหรือปลดล็อกตำแหน่งนี้</span>}
+            {index > 0 && <span className="tooltiptext">{t('tooltip')}</span>}
           </div>
 
 
@@ -132,8 +140,8 @@ export default function DynamicInput({ onDataChange }) {
                   )
                 }
               >
-                <option value="">ระยะเวลาที่ใช้</option>
-                {[1, 2, 3, 4, 5].map(n => (
+                <option value="">{t('duration')}</option>
+                {[1, 2, 3, 4].map(n => (
                   <option key={n} value={n}>
                     {n}
                   </option>
@@ -170,7 +178,7 @@ export default function DynamicInput({ onDataChange }) {
       {/* ปุ่มเพิ่ม & checkbox หลีกเลี่ยงค่าผ่านทาง */}
       <div className="options-container">
         <button className="add-button" onClick={addInputSet} disabled={inputs.length >= 10}>
-          + เพิ่มจุดแวะ
+          {t('add_btn')}
         </button>
 
         <div className="checkbox-container">
@@ -182,7 +190,7 @@ export default function DynamicInput({ onDataChange }) {
             onChange={e => setAvoidTolls(e.target.checked)}
           />
           <label htmlFor="avoid-tolls" className="checkbox-label">
-            หลีกเลี่ยงค่าผ่านทาง
+            {t('avoidtolls')}
           </label>
         </div>
       </div>

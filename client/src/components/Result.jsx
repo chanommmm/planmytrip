@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import './Result.css';
+import { useTranslation } from 'react-i18next';
 
 export default function Result({ routeData, travelMode }) {
   const routes = routeData?.routes || [];
   const [showDetailsMap, setShowDetailsMap] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState(null);
+
+  const { t, i18n } = useTranslation();
+    const changeLanguage = (lng) => {
+      i18n.changeLanguage(lng);
+    };
 
   const toggleDetails = (index) => {
     setShowDetailsMap(prev => ({
@@ -80,7 +86,7 @@ export default function Result({ routeData, travelMode }) {
           <div key={routeIndex} className="info-result">
             {/* ส่วนแสดงหมายเลขเส้นทาง */}
             <div className="num-result">
-              <span>เส้นทางแนะนำ {routeIndex + 1}</span>
+              <span>{t('recommended_route')} {routeIndex + 1}</span>
               <h1>{route.totalDuration}</h1>  {/* แสดงระยะเวลารวม */}
             </div>
 
@@ -106,8 +112,8 @@ export default function Result({ routeData, travelMode }) {
 
               {/* สรุประยะทางและเวลา */}
               <div className="path-info">
-                <span>{route.totalDistance} กม.</span>
-                <span>ระยะเวลาทั้งหมด</span>
+                <span>{route.totalDistance} {t('km')}</span>
+                <span>{t('total_duration')}</span>
                 <span>{route.totalDuration}</span>
               </div>
 
@@ -125,8 +131,8 @@ export default function Result({ routeData, travelMode }) {
                         </div>
                         <div className="detail-wrap">
                           <span className="location-name">{step.name}</span>
-                          <span>ถึง: {step.arrival} / พัก: {step.stay} ชม.</span>
-                          <span>เดินทาง: {step.travelDistance} กม. / {step.travelDuration}</span>
+                          <span>{t('arrival')}: {step.arrival} / {t('stay')}: {step.stay} {t('hourUnit')}</span>
+                          {t('travel')}: {step.travelDistance} {t('kmUnit')} / {step.travelDuration}
                         </div>
                       </div>
                       {index < currentRoute.length - 1 && (
@@ -143,28 +149,11 @@ export default function Result({ routeData, travelMode }) {
               <button onClick={() => handleStartJourney(route)}>
                 <div className="grid-btn-result">
                   <i className="bi bi-car-front-fill"></i>
-                  <span>เริ่มเดินทาง</span>
+                  <span>{t('startJourney')}</span>
                 </div>
               </button>
             </div>
 
-            {/* Modal Popup แจ้งเตือน */}
-            {showModal && (
-              <div className="modal-overlay">
-                <div className="modal-content">
-                  <span className="close" onClick={closeModal}>&times;</span>
-                  <h2>หมายเหตุ</h2>
-                  <p>
-                    ใน Google Maps API, เมื่อเลือกใช้ Public Transit (รถสาธารณะ) เป็นวิธีการเดินทาง,
-                    ระบบจะไม่อนุญาตให้เพิ่มจุดแวะ (waypoints) ในเส้นทางได้เนื่องจากข้อจำกัดของระบบการเดินทางสาธารณะ
-                    เช่น รถเมล์ หรือ รถไฟ ซึ่งมีเส้นทางที่กำหนดไว้ล่วงหน้าและมีเวลาที่แน่นอนในการเดินทางระหว่างจุดต่าง ๆ
-                    การปรับเปลี่ยนเส้นทางเหล่านี้ด้วยจุดแวะเพิ่มเติมอาจทำให้ระบบไม่สามารถคำนวณเส้นทางที่สามารถใช้บริการสาธารณะได้อย่างแม่นยำ
-                  </p>
-                  <button onClick={closeModal}>ปิด</button>
-                  <button onClick={confirmStartJourney}>ยืนยันและเริ่มเดินทาง</button>
-                </div>
-              </div>
-            )}
           </div>
         );
       })}

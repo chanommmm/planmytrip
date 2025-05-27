@@ -35,7 +35,7 @@ export default function Mainpage({ sendData }) {
   const handleSubmit = async (overrideClosed = false) => {
     // 1. ตรวจสอบข้อมูลเบื้องต้น 
     if (!transport || !date || !time || inputData.inputs.length === 0) {
-      return alert("กรุณากรอกข้อมูลให้ครบก่อนเริ่มวางแผน!");
+      return alert(t('alert4'));
     }
 
     // 2. สร้าง moment + format
@@ -89,7 +89,7 @@ export default function Mainpage({ sendData }) {
         const popupLines = [];
         popupLines.push(
           <strong key="title" style={{ fontSize: "22px", color: "#00000", display: "block", marginBottom: "16px" }}>
-            ไม่สามารถหาเส้นทางที่ดีที่สุดได้ในขณะนี้
+            {t('alert3')}
           </strong>
         );
 
@@ -98,14 +98,14 @@ export default function Mainpage({ sendData }) {
         }
 
         if (closed.length > 0) {
-          popupLines.push(<p key="subtitle">รายการสถานที่ที่ไม่ตรงเงื่อนไข:</p>);
+          popupLines.push(<p key="subtitle">{t('alert2')}:</p>);
           closed.forEach((name, idx) => {
             popupLines.push(<li key={`closed-${idx}`}>• {name}</li>);
           });
         }
 
         popupLines.push(
-          <p key="confirm">คุณต้องการลองคำนวณใหม่โดยไม่สนเงื่อนไขหรือยกเลิกเพื่อทำการแก้ไขข้อมูล</p>
+          <p key="confirm">{t('alert1')}</p>
         );
 
         setPopupMessage(popupLines); // ส่งเป็น array ของ JSX
@@ -148,7 +148,7 @@ export default function Mainpage({ sendData }) {
           </div>
 
           <div className="overlay-content">
-            <div className="Title">เริ่มต้นสร้างแผนการเดินทาง</div> 
+            <div className="Title">{t('title_mainpage')}</div> 
             <div className="box">
               <div className="category-box">
                 <label className="category-botton">
@@ -159,7 +159,7 @@ export default function Mainpage({ sendData }) {
                     onChange={e => setTransport(e.target.value)}
                   />
                   <i className="bi bi-car-front-fill" />
-                  <span className="type">รถยนต์</span>
+                  <span className="type">{t('type1')}</span>
                 </label>
                 <label className="category-botton">
                 <input
@@ -169,7 +169,7 @@ export default function Mainpage({ sendData }) {
                   onChange={e => setTransport(e.target.value)}
                 />
                 <i className="bi bi-truck-front-fill" />
-                <span className="type">ขนส่งสาธารณะ</span>
+                <span className="type">{t('type2')}</span>
               </label>                
                 <label className="category-botton"> 
                   <input
@@ -179,7 +179,7 @@ export default function Mainpage({ sendData }) {
                     onChange={e => setTransport(e.target.value)}
                   />
                   <i className="bi bi-person-standing" />
-                  <span className="type">เดิน</span>
+                  <span className="type">{t('type3')}</span>
                 </label>
               </div>
 
@@ -192,7 +192,7 @@ export default function Mainpage({ sendData }) {
                       onChange={d => setDate(d)}
                       locale="th"
                       dateFormat="dd MMMM yyyy"
-                      placeholderText="เลือกวันที่เริ่มเดินทาง"
+                      placeholderText={t('placeholder1')}
                       className="date-picker"
                     />
                   </label> 
@@ -203,7 +203,7 @@ export default function Mainpage({ sendData }) {
                       onChange={e => setTime(e.target.value)}
                       className={`styled-select no-border ${!time ? 'placeholder' : ''}`}
                     >
-                      <option value="" disabled>เลือกเวลาเริ่มต้น</option>
+                      <option value="" disabled>{t('placeholder2')}</option>
                       {generateTimeOptions().map(t => (
                         <option key={t} value={t}>{t}</option>
                       ))}
@@ -217,7 +217,7 @@ export default function Mainpage({ sendData }) {
 
                 <div className="submit-box">
                   <button className="submit-button" onClick={() => handleSubmit(false)}>
-                    เริ่มต้นวางแผนการเดินทาง
+                    {t('submit_btn')}
                   </button>
                 </div>
               </div>
@@ -252,7 +252,7 @@ export default function Mainpage({ sendData }) {
                     handleSubmit(true); // ✅ overrideClosed = true
                   }}
                 >
-                  ลองคำนวณใหม่
+                  {t('confirm_btn')}
                 </button>
                 <button
                   className="popup-close"
@@ -261,7 +261,7 @@ export default function Mainpage({ sendData }) {
                     setPopupShowConfirm(false);
                   }}
                 >
-                  ยกเลิก
+                  {t('cancel_btn')}
                 </button>
               </div>
             ) : (
@@ -269,7 +269,7 @@ export default function Mainpage({ sendData }) {
                 className="popup-close"
                 onClick={() => setIsPopupVisible(false)}
               >
-                ยกเลิก
+                {t('cancel_btn')}
               </button>
             )}
           </div>
