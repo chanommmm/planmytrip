@@ -2,6 +2,7 @@ import React from "react";
 import "./howto.css";
 import Footer from "../components/Footer";
 import { HeaderHowto } from "../components/Header";
+import { useTranslation } from 'react-i18next';
 
 const steps = [
   {
@@ -35,6 +36,10 @@ const steps = [
 ];
 
 const Howto = () => {
+  const { t, i18n } = useTranslation();
+    const changeLanguage = (lng) => {
+      i18n.changeLanguage(lng);
+  };
   return (
     <>
       <HeaderHowto />
