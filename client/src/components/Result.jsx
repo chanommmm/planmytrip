@@ -73,7 +73,7 @@ export default function Result({ routeData, travelMode }) {
   };
 
   const convertPositionToLetter = (position) => {
-    return String.fromCharCode(65 + position); // ✅ 'A' = 65, 'B' = 66, ...
+    return String.fromCharCode(65 + position); // 'A' = 65, 'B' = 66, ...
   };
 
   return (

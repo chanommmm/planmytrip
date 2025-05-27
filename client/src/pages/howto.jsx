@@ -4,48 +4,49 @@ import Footer from "../components/Footer";
 import { HeaderHowto } from "../components/Header";
 import { useTranslation } from 'react-i18next';
 
-const steps = [
-  {
-    id: 1,
-    title: "ขั้นตอนที่ 1: เลือกวิธีการเดินทาง",
-    desc: "เลือกระหว่างรถยนต์หรือเดินเท้า เพื่อเริ่มวางแผนเส้นทางที่เหมาะสมกับคุณ",
-    img: "step1-Copy.png",
-    reverse: false,
-  },
-  {
-    id: 2,
-    title: "ขั้นตอนที่ 2: กำหนดวันและเวลา",
-    desc: "ระบุวันที่และเวลาที่คุณต้องการเริ่มต้นการเดินทาง",
-    img: "Step2.png",
-    reverse: true,
-  },
-  {
-    id: 3,
-    title: "ขั้นตอนที่ 3: เพิ่มจุดหมาย",
-    desc: "กรอกสถานที่ที่คุณอยากแวะหรือจุดหมายปลายทาง พร้อมตัวเลือกหลีกเลี่ยงค่าผ่านทาง",
-    img: "Step3.png",
-    reverse: false,
-  },
-  {
-    id: 4,
-    title: "ขั้นตอนที่ 4: กำหนดเวลา",
-    desc: "ระบุเวลาที่คุณต้องการจะอยู่ในแต่ละสถานที่",
-    img: "Step4.png",
-    reverse: true,
-  },
-];
-
 const Howto = () => {
   const { t, i18n } = useTranslation();
     const changeLanguage = (lng) => {
       i18n.changeLanguage(lng);
   };
+
+  const steps = [
+    {
+      id: 1,
+      title: t('step1'),
+      desc: t('step_desc1'),
+      img: "step1-Copy.png",
+      reverse: false,
+    },
+    {
+      id: 2,
+      title: t('step2'),
+      desc: t('step_desc2'),
+      img: "Step2.png",
+      reverse: true,
+    },
+    {
+      id: 3,
+      title: t('step3'),
+      desc: t('step_desc3'),
+      img: "Step3.png",
+      reverse: false,
+    },
+    {
+      id: 4,
+      title: t('step4'),
+      desc: t('step_desc4'),
+      img: "Step4.png",
+      reverse: true,
+    },
+  ];
+ 
   return (
     <>
       <HeaderHowto />
 
       <div className="how-to-section">
-        <h2 className="section-title">วิธีการใช้งาน</h2>
+        <h2 className="section-title">{t('how_to_use')}</h2>
         {steps.map(step => (
           <div key={step.id} className="step-card">
             <div className={`step-row ${step.reverse ? 'reverse' : ''}`}>

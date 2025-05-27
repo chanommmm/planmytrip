@@ -45,7 +45,7 @@ export default function DynamicInput({ onDataChange }) {
             }
           : item
       );
-      return assignPositions(updated); // ✅ update position
+      return assignPositions(updated); 
     });
   };
 
