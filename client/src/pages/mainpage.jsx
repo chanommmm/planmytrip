@@ -67,11 +67,11 @@ export default function Mainpage({ sendData }) {
       overrideClosed,
     };
 
-    console.log("📌 ส่งไป backend:", request);
+    console.log("ส่งไป backend:", request);
 
     try {
       const resp = await sendData(request);
-      console.log("📥 ตอบกลับ:", resp);
+      console.log("ตอบกลับ:", resp);
 
       // 5. กรณีคำนวณสำเร็จ
       if (resp.success) {
@@ -80,7 +80,7 @@ export default function Mainpage({ sendData }) {
         throw new Error(resp.message || "ไม่สามารถคำนวณได้");
       }
     } catch (err) {
-      console.error("❌ Error:", err);
+      console.error("Error:", err);
 
       const message = err?.response?.data?.message || err?.message;
       const closed = err?.response?.data?.closed || [];
@@ -249,7 +249,7 @@ export default function Mainpage({ sendData }) {
                   onClick={() => {
                     setIsPopupVisible(false);
                     setPopupShowConfirm(false);
-                    handleSubmit(true); // ✅ overrideClosed = true
+                    handleSubmit(true); 
                   }}
                 >
                   {t('confirm_btn')}
