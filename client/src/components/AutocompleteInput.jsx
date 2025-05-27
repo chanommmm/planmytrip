@@ -1,6 +1,13 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 
 const AutocompleteInput = ({ index, onSelect }) => {
+    
+    const { t, i18n } = useTranslation();
+        const changeLanguage = (lng) => {
+            i18n.changeLanguage(lng);
+        };
+    
     const inputRef = useRef(null);
 
     useEffect(() => {
@@ -47,7 +54,7 @@ const AutocompleteInput = ({ index, onSelect }) => {
         <input 
             type="text"
             ref={inputRef}
-            placeholder={index === 0 ? "เลือกจุดเริ่มต้น" : "เลือกจุดหมาย"}
+            placeholder={index === 0 ? t('startPointPlaceholder') : t('destinationPlaceholder')}
             className="autocomplete-input"
         />
     );

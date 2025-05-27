@@ -12,7 +12,8 @@
   
 /* --- ส่วนแสดงลำดับเส้นทาง --- */
 .num-result {
-  flex-grow: 0.25;
+  /* flex-grow: 0.25; */
+  min-width: 25vb;
   padding: 1rem;
   border-right: 2px solid #c6c6c6;
   position: relative;

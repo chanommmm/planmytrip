@@ -250,7 +250,8 @@ async function solveWithAStar(nodes, distMat, straight, startTime, overrideClose
     
     const travelTime = d.durationValue * 1000;
     currentTime = currentTime.clone().add(travelTime, "ms");
-    totalG += d.distanceValue;
+    // totalG += d.distanceValue;
+    totalG += d.durationValue;
     
     // เพิ่มเวลาที่ใช้ในสถานที่ (ยกเว้นสถานที่สุดท้าย)
     if (i < initialState.sequence.length - 1) {
