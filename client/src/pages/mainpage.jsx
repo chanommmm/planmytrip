@@ -8,6 +8,7 @@ import { th } from "date-fns/locale";
 import Result from '../components/Result';  // นำ Result component มาใช้งาน
 import Footer from '../components/Footer';
 import moment from 'moment-timezone';
+import { useTranslation } from 'react-i18next';
 
 registerLocale("th", th);
 
@@ -21,6 +22,11 @@ export default function Mainpage({ sendData }) {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
   const [popupShowConfirm, setPopupShowConfirm] = useState(false); // << ปุ่มยืนยัน
+
+  const { t, i18n } = useTranslation();
+    const changeLanguage = (lng) => {
+      i18n.changeLanguage(lng);
+  };
  
   useEffect(() => {
     console.log("ข้อมูล Input ล่าสุด:", inputData);
@@ -99,7 +105,7 @@ export default function Mainpage({ sendData }) {
         }
 
         popupLines.push(
-          <p key="confirm">คุณต้องการลองคำนวณใหม่โดยไม่สนเงื่อนไขหรือไม่?</p>
+          <p key="confirm">คุณต้องการลองคำนวณใหม่โดยไม่สนเงื่อนไขหรือยกเลิกเพื่อทำการแก้ไขข้อมูล</p>
         );
 
         setPopupMessage(popupLines); // ส่งเป็น array ของ JSX
