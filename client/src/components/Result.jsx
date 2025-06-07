@@ -20,6 +20,21 @@ export default function Result({ routeData, travelMode }) {
     }));
   };
 
+  // ฟังก์ชันแปลงนาทีเป็นชั่วโมงและนาที
+  const formatDurationFromMinutes = (minutes, t) => {
+    if (minutes >= 60) {
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      
+      if (remainingMinutes === 0) {
+        return `${hours} ${t('hourUnit')}`;
+      } else {
+        return `${hours} ${t('hourUnit')} ${remainingMinutes} ${t('minuteUnit')}`;
+      }
+    }
+    return `${minutes} ${t('minuteUnit')}`;
+  };
+
   // ฟังก์ชันสำหรับสร้าง URL ของ Google Maps
   const generateGoogleMapsLinkFromNames = (route) => {
     const points = route.optimalRoute;
@@ -87,7 +102,7 @@ export default function Result({ routeData, travelMode }) {
             {/* ส่วนแสดงหมายเลขเส้นทาง */}
             <div className="num-result">
               <span>{t('recommended_route')} {routeIndex + 1}</span>
-              <h1>{route.totalDuration}</h1>  {/* แสดงระยะเวลารวม */}
+              <h1>{formatDurationFromMinutes(route.travelDuration, t)}</h1>  {/* แสดงระยะเวลารวม */}
             </div>
 
             {/* ส่วนแสดงเส้นทาง */}
@@ -114,7 +129,7 @@ export default function Result({ routeData, travelMode }) {
               <div className="path-info">
                 <span>{route.totalDistance} {t('km')}</span>
                 <span>{t('total_duration')}</span>
-                <span>{route.totalDuration}</span>
+                <span>{formatDurationFromMinutes(route.totalDuration, t)}</span>
               </div>
 
               {/* แสดงรายละเอียดเพิ่มเติม */}
@@ -131,8 +146,8 @@ export default function Result({ routeData, travelMode }) {
                         </div>
                         <div className="detail-wrap">
                           <span className="location-name">{step.name}</span>
-                          <span>{t('arrival')}: {step.arrival} / {t('stay')}: {step.stay} {t('hourUnit')}</span>
-                          {t('travel')}: {step.travelDistance} {t('kmUnit')} / {step.travelDuration}
+                          <span>{t('arrival')}: {step.arrival} {t('stay')}: {step.stay} {t('hourUnit')}</span>
+                          {t('travel')}: {step.travelDistance} {t('kmUnit')}  {t('timespent')}: {formatDurationFromMinutes(step.travelDuration, t)}
                         </div>
                       </div>
                       {index < currentRoute.length - 1 && (
@@ -148,7 +163,7 @@ export default function Result({ routeData, travelMode }) {
             <div className="btn-result">
               <button onClick={() => handleStartJourney(route)}>
                 <div className="grid-btn-result">
-                  <i className="bi bi-car-front-fill"></i>
+                  <i class="bi bi-sign-turn-right-fill"></i>
                   <span>{t('startJourney')}</span>
                 </div>
               </button>
