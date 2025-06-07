@@ -271,7 +271,7 @@ async function solveWithAStar(nodes, distMat, straight, startTime, overrideClose
   console.log("Initial state:", initialState);
   
   // คำนวณเวลาเดินทางไปยัง forced sequence
-  let totalDuration = 0; // ใช้ duration แทน distance
+  let totalDuration = 0; 
   let totalTimeSpent = 0; // รวมเวลาที่ใช้ในสถานที่ด้วย
   
   for (let i = 1; i < initialState.sequence.length; i++) {
@@ -292,7 +292,7 @@ async function solveWithAStar(nodes, distMat, straight, startTime, overrideClose
     if (i < initialState.sequence.length - 1) {
       const serviceTime = (parseFloat(nodes[to].number) || 0) * 3600 * 1000;
       currentTime = currentTime.clone().add(serviceTime, "ms");
-      totalTimeSpent += (parseFloat(nodes[to].number) || 0) * 3600; // เพิ่มใน seconds
+      totalTimeSpent += (parseFloat(nodes[to].number) || 0) * 3600; 
     }
   }
 
@@ -319,7 +319,7 @@ async function solveWithAStar(nodes, distMat, straight, startTime, overrideClose
     const cur = pq.pop();
     
     if (cur.mask === ALL) {
-      console.log("✅ Found complete path:", cur.sequence);
+      console.log("Found complete path:", cur.sequence);
       
       const route = [];
       let routeTime = startTime.clone();
@@ -431,13 +431,9 @@ async function solveWithAStar(nodes, distMat, straight, startTime, overrideClose
   return bestPaths.map(item => item.path);
 }
 
-// --- แปลงวินาทีเป็นข้อความ --- 
+// --- แปลงวินาทีเป็นนาที --- 
 function formatDuration(sec) {
-  if (sec >= 3600) {
-    const h = Math.floor(sec / 3600), m = Math.round((sec % 3600) / 60);
-    return `${h} ชม. ${m} นาที`;
-  }
-  return `${Math.round(sec / 60)} นาที`;
+  return Math.round(sec / 60); // ส่งกลับเป็นนาทีแล้วค่อยแปลงต่อในfrontเพื่อให้ง่ายต่อการแปลภาษา
 }
 
 // --- Endpoint: POST /api/plan ---
@@ -589,7 +585,8 @@ router.post("/api/plan", async (req, res) => {
     }
 
     const optimal = solutions.map(solution => {
-      let totDist = 0, totDur = 0;
+      let totDist = 0, totTravelDur = 0, totStayDur = 0; // แยกเวลาเดินทางกับเวลาพัก
+      
       const optimalRoute = solution.map((step, i) => {
         const { node, arrival } = step;
         const stayH = parseFloat(node.number) || 0;
@@ -603,7 +600,12 @@ router.post("/api/plan", async (req, res) => {
           travelDist = d.distanceValue;
           totDist += d.distanceValue;
           travelDur = d.durationValue;
-          totDur += d.durationValue;
+          totTravelDur += d.durationValue; // รวมเฉพาะเวลาเดินทาง
+        }
+
+        // รวมเวลาพักของทุกสถานที่ยกเว้นจุดสุดท้าย
+        if (i < solution.length - 1) {
+          totStayDur += stayH * 3600; // แปลงชั่วโมงเป็นวินาที
         }
 
         return {
@@ -623,7 +625,11 @@ router.post("/api/plan", async (req, res) => {
       return {
         optimalRoute,
         totalDistance: (totDist / 1000).toFixed(2),
-        totalDuration: formatDuration(totDur),
+        travelDuration: formatDuration(totTravelDur), // เวลาเดินทางล้วน
+        totalDuration: formatDuration(totTravelDur + totStayDur), // เวลารวมทั้งหมด
+        totalTravelTime: totTravelDur, // เวลาเดินทางเป็นวินาที
+        totalStayTime: totStayDur, // เวลาพักเป็นวินาที
+        totalTime: totTravelDur + totStayDur, // เวลารวมเป็นวินาที
         feasible: optimalRoute.every(x => x.isOpenAtArrival) || overrideClosed
       };
     }).slice(0, 3);

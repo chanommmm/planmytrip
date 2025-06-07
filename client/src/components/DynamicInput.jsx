@@ -143,7 +143,7 @@ export default function DynamicInput({ onDataChange }) {
                 <option value="">{t('duration')}</option>
                 {[1, 2, 3, 4].map(n => (
                   <option key={n} value={n}>
-                    {n}
+                    {n} {t('hourUnit')}
                   </option>
                 ))}
               </select>

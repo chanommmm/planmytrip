@@ -184,12 +184,13 @@
   /* รูปแบบสำหรับ Mobile */
   .info-result {
     width: 80%;
-    margin: 0 auto;
+    margin: 10px auto;
     /*min-height: 110px;*/
     border: 1px solid #D9D9D9;
     display: grid;
     grid-template-columns: auto;
     /*text-align: start;*/
+
   }
   
   /* --- ส่วนแสดงลำดับเส้นทาง --- */
@@ -243,6 +244,12 @@
   /* --- รายละเอียดแบบแสดงผลเพิ่มเติม --- */
   .details-content {
     padding-left: 0rem;
+  }
+
+  .detail-wrap {
+    align-self: start;
+    align-items: start;
+    text-align: left;
   }
   
 
