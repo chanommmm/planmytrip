@@ -101,7 +101,13 @@ async function getAllPairDistances(coords, mode, avoidTolls = false, departureTi
   const depTimeParam = mode === "transit" && departureTime
     ? `&departure_time=${Math.floor(departureTime / 1000)}`
     : "";
-  const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${coords.join("|")}&destinations=${coords.join("|")}&mode=${mode}${avoid}&key=${GOOGLE_API_KEY}${depTimeParam}`;
+  const url = "https://maps.googleapis.com/maps/api/distancematrix/json?" +
+    "origins=" + encodeURIComponent(coords.join("|")) +
+    "&destinations=" + encodeURIComponent(coords.join("|")) +
+    "&mode=" + mode +
+    avoid +
+    "&key=" + GOOGLE_API_KEY +
+    depTimeParam;
   
   const { data } = await axios.get(url);
   if (data.status !== "OK") throw new Error(data.status); 
