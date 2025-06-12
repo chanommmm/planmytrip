@@ -275,6 +275,21 @@ header {
         display: flex;
     }
 
+    .fake-select{
+        border-color: none;
+        width: 100%;
+        text-align: center;
+    }
+
+    .selected-option {
+        margin: 0 auto;
+    }
+
+    .option {
+        margin: 0 40%;
+        text-align: center;
+    }
+
 }
 
 
