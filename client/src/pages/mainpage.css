@@ -331,7 +331,9 @@
   }
   
   .popup-message {
-    /* white-space: pre-wrap; */
+    white-space: normal;      /* บรรทัดตัดอัตโนมัติ */
+    word-wrap: break-word;    /* ตัดคำหากเกิน */
+    overflow-wrap: break-word;
     color: #444;
     font-size: 0.9rem;
     margin-bottom: 1.5rem;

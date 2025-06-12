@@ -240,7 +240,8 @@ export default function Mainpage({ sendData }) {
         {isPopupVisible && (
         <div className="popup-overlay">
           <div className="popup-box">
-            <pre className="popup-message">{popupMessage}</pre>
+            {/* <pre className="popup-message">{popupMessage}</pre> */}
+            <div className="popup-message">{popupMessage}</div>
 
             {popupShowConfirm ? (
               <div className="popup-buttons">
